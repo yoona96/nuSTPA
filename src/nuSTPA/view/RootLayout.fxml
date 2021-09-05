@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nuSTPA.view.RootLayoutController">
+   <top>
+      <VBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="1000.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save as.." />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleHelp" text="Show Help Dialog" />
+                     </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Overview">
+                	 <items>
+                  	 	<MenuItem mnemonicParsing="false" onAction="#handleOverview" text="Show Process Overview" />
+                  	 </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </VBox>
+   </top>
+   <center>
+     <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <Rectangle fill="WHITE" height="179.0" layoutX="568.3333333333337" layoutY="566.3333333333331" stroke="BLACK" strokeType="OUTSIDE" width="402.0" AnchorPane.leftAnchor="555.0" AnchorPane.topAnchor="572.6666666666666" />
+            <Rectangle fill="WHITE" height="339.0" layoutX="40.0" layoutY="212.0" stroke="BLACK" strokeType="INSIDE" width="920.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <Rectangle fill="WHITE" height="218.0" layoutX="550.0" layoutY="267.0" stroke="BLACK" strokeType="INSIDE" width="272.0" />
+            <Rectangle fill="WHITE" height="144.0" layoutX="39.0" layoutY="55.0" stroke="BLACK" strokeType="INSIDE" width="920.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="55.0" />
+            <Button fx:id="LHCButton" alignment="CENTER" layoutX="53.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleStep1Button" prefHeight="95.0" prefWidth="200.0" text="Step 1. Define Purpose of the Analysis" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="91.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Text layoutX="50.0" layoutY="80.01953125" strokeType="OUTSIDE" strokeWidth="0.0" text="STPA Process" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="65.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Button fx:id="CSEButton" alignment="CENTER" layoutX="286.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleStep2Button" prefHeight="95.0" prefWidth="200.0" text="Step 2. Model the Control Structure" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="286.0" AnchorPane.topAnchor="91.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Text layoutX="51.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NuSCR Support Process" AnchorPane.leftAnchor="50.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="80.0" layoutX="175.0" layoutY="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0" AnchorPane.leftAnchor="175.0" />
+            <Text layoutX="175.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Step 1) Identify output variables concerning CAs" textAlignment="CENTER" wrappingWidth="250.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="575.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="80.0" layoutX="175.0" layoutY="456.0" stroke="BLACK" strokeType="INSIDE" width="250.0" AnchorPane.leftAnchor="175.0" />
+            <Rectangle fill="WHITE" height="80.0" layoutX="562.0" layoutY="392.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
+            <Text layoutX="567.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Step 4) Analyze with NuFTA to Produce MCSs" textAlignment="CENTER" wrappingWidth="240.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Button fx:id="PMMButton" layoutX="175.0" layoutY="348.0" mnemonicParsing="false" onAction="#handlePMVButton" prefHeight="90.0" prefWidth="250.0" text="(Step 2) Extract the information needed to create process model" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="175.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Button>
+            <Polyline fill="#80ff0000" layoutX="107.0" layoutY="390.0" points="278.9999694824219, -203.66665649414062, 278.9999694824219, -160.0, 193.0, -160.0, 192.83334350585938, -143.75408935546875" strokeDashOffset="5.0" strokeWidth="1.2" style="-fx-stroke-dash-array: 7;" />
+            <Polyline fill="#80ff0000" layoutX="117.0" layoutY="393.0" points="147.1666259765625, 185.88885498046875, 147.1666259765625, 168.5555419921875, 183.0, 168.5555419921875, 183.0, 142.6666259765625" strokeDashOffset="10.0" strokeWidth="1.2" style="-fx-stroke-dash-array: 7;" />
+            <Polyline fill="#80ff0000" layoutX="115.0" layoutY="279.0" points="310.2778015136719, 216.4444580078125, 343.61114501953125, 216.4444580078125, 343.61114501953125, 152.0, 447.0, 152.0" strokeDashOffset="10.0" />
+            <Rectangle fill="WHITE" height="28.0" layoutX="698.0" layoutY="561.0" stroke="BLACK" strokeType="OUTSIDE" width="121.0" />
+            <Text layoutX="692.0" layoutY="580.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Context Table" textAlignment="CENTER" wrappingWidth="132.93120741844177">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <Polyline fill="#80ff0000" layoutX="138.0" layoutY="410.0" points="548.0, -139.5555419921875, 548.0, -183.66665649414062, 478.16668701171875, -183.66665649414062, 478.166748046875, -219.11111450195312" strokeDashOffset="10.0" strokeWidth="1.2" style="-fx-stroke-dash-array: 7;" />
+            <Polyline fill="#80ff0000" layoutX="148.0" layoutY="422.0" points="610.5, 138.0, 610.5, 98.6666259765625, 538.0, 98.6666259765625, 538.0, 63.0" strokeDashOffset="10.0" strokeWidth="1.2" style="-fx-stroke-dash-array: 7;" />
+            <Polygon layoutX="707.0" layoutY="335.0" points="-11.0, 2.0, 5.0, 2.0, -3.0, -10.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button fx:id="UTMButton" alignment="CENTER" layoutX="516.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleStep3Button" prefHeight="95.0" prefWidth="200.0" text="Step 3. Identify Unsafe Control Actions" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="515.0" AnchorPane.topAnchor="91.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="LSButton" alignment="CENTER" layoutX="747.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleStep4Button" prefHeight="95.0" prefWidth="200.0" text="Step 4. Identify Loss Scenarios" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="747.0" AnchorPane.topAnchor="91.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Rectangle fill="WHITE" height="42.0" layoutX="2.5" layoutY="1.5" stroke="TRANSPARENT" width="994.0" AnchorPane.bottomAnchor="729.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0" />
+            <Label layoutX="424.0" layoutY="8.0" text="Process Overview" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Line endX="286.0" endY="142.0" layoutY="-3.0" startX="253.3333282470703" startY="142.0" />
+            <Polygon layoutX="287.0" layoutY="148.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Text layoutX="190.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Step 3) Construct a Control Structure" textAlignment="CENTER" wrappingWidth="220.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="590.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Line endX="282.83331298828125" endY="142.24591064453125" layoutX="233.0" layoutY="-3.0" startX="252.83331298828125" startY="142.24591064453125" />
+            <Polygon layoutX="517.0" layoutY="148.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Line endX="280.33331298828125" endY="141.66665649414062" layoutX="465.0" layoutY="-3.0" startX="250.66668701171875" startY="141.66665649414062" />
+            <Polygon layoutX="748.0" layoutY="148.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button fx:id="CTMButton" layoutX="561.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleCTButton" prefHeight="90.0" prefWidth="250.0" text="(Step 5) Generate Combinations of PMV for CT" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Button>
+            <Line endX="290.0" endY="341.0" layoutX="10.0" layoutY="7.0" startX="290.0" startY="323.0" />
+            <Line endX="290.0" endY="341.0" layoutX="10.0" layoutY="115.0" startX="290.0" startY="323.0" />
+            <Polygon layoutX="620.0" layoutY="198.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="690.0" layoutY="380.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" stroke="BLACK" strokeType="INSIDE" />
+            <Line endX="290.0" endY="341.0" layoutX="396.0" layoutY="51.0" startX="290.0" startY="323.0" />
+            <Polygon layoutX="304.0" layoutY="255.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="304.0" layoutY="353.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="304.0" layoutY="461.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="268.0" layoutY="586.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="763.0" layoutY="565.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Rectangle fill="WHITE" height="71.0" layoutX="184.0" layoutY="582.0" stroke="BLACK" strokeType="OUTSIDE" width="157.0" AnchorPane.leftAnchor="183.0" />
+            <Text layoutX="197.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Controller" textAlignment="CENTER" wrappingWidth="132.93120741844177" AnchorPane.leftAnchor="197.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Text>
+            <Polygon layoutX="563.0" layoutY="440.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Rectangle fill="WHITE" height="28.0" layoutX="193.0" layoutY="726.0" stroke="BLACK" strokeType="OUTSIDE" width="157.0" AnchorPane.leftAnchor="183.0" AnchorPane.topAnchor="725.0" />
+            <Text layoutX="192.0" layoutY="744.5979817708331" strokeType="OUTSIDE" strokeWidth="0.0" text="Controlled Process" textAlignment="CENTER" wrappingWidth="141.37563490867615" AnchorPane.leftAnchor="192.0" AnchorPane.topAnchor="731.9999999999998">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="36.0" layoutX="188.0" layoutY="612.0" stroke="BLACK" strokeType="OUTSIDE" width="72.0" />
+            <Text layoutX="189.0" layoutY="626.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Control Algorithm" textAlignment="CENTER" wrappingWidth="71.59783339500427">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="36.0" layoutX="265.0" layoutY="612.0" stroke="RED" strokeType="OUTSIDE" width="72.0" />
+            <Text layoutX="266.0" layoutY="626.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Process Model" textAlignment="CENTER" wrappingWidth="71.59783339500427">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="21.0" layoutX="116.0" layoutY="679.0" stroke="BLACK" strokeType="OUTSIDE" width="74.0" />
+            <Text layoutX="117.0" layoutY="694.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actuator" textAlignment="CENTER" wrappingWidth="71.59783339500427">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Rectangle fill="WHITE" height="21.0" layoutX="330.0" layoutY="679.0" stroke="BLACK" strokeType="OUTSIDE" width="74.0" />
+            <Text layoutX="331.0" layoutY="694.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor" textAlignment="CENTER" wrappingWidth="71.59783339500427">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Polyline fill="#80ff0000" layoutX="126.0" layoutY="289.0" points="57.00001525878906, 328.5, 27.000015258789062, 328.5, 27.000015258789062, 328.5, 27.000015258789062, 389.0" strokeDashOffset="10.0" />
+            <Polyline fill="#80ff0000" layoutX="171.0" layoutY="291.0" points="171.0, 326.5, 196.0, 326.5, 196.0, 326.5, 196.0, 387.0" strokeDashOffset="10.0" />
+            <Polyline fill="#80ff0000" layoutX="181.0" layoutY="301.0" points="161.0, 439.0, 186.0, 439.0, 186.0, 439.0, 186.0, 400.0" strokeDashOffset="10.0" />
+            <Polyline fill="#80ff0000" layoutX="22.0" layoutY="301.0" points="161.0, 439.0, 131.00001525878906, 439.0, 131.00001525878906, 439.0, 131.00001525878906, 400.0" strokeDashOffset="10.0" />
+            <Polygon layoutX="157.0" layoutY="683.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="180.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="371.0" layoutY="713.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="350.0" layoutY="626.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="270.0" stroke="BLACK" strokeType="INSIDE" />
+            <Polygon layoutX="184.0" layoutY="749.0" points="-9.055572509765625, -4.7777862548828125, 0.72222900390625, -4.7777862548828125, -4.147449493408203, -12.730390548706055" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+            <Text layoutX="103.0" layoutY="638.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Control Actions" textAlignment="JUSTIFY" wrappingWidth="49.8200318813324">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text layoutX="370.0" layoutY="648.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Feedback" textAlignment="JUSTIFY" wrappingWidth="71.59783339500427">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text layoutX="43.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PMV: Process model variable" wrappingWidth="166.70899367332458" AnchorPane.leftAnchor="43.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text layoutX="47.0" layoutY="571.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CT: Context table" wrappingWidth="166.70899367332458" AnchorPane.leftAnchor="43.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Text layoutX="62.0" layoutY="581.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CA: Control action" wrappingWidth="166.70899367332458" AnchorPane.leftAnchor="43.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="148.0" fitWidth="355.0" layoutX="584.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/contextTableImage.PNG" />
+               </image>
+            </ImageView>
+         </children>
+         </AnchorPane>
+   </center>
+   <left>
+      
+   </left>
+</BorderPane>

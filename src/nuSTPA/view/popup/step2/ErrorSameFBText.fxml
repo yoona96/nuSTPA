@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="98.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <Rectangle fill="DARKSEAGREEN" height="40.0" layoutY="-1.0" strokeWidth="0.0" width="364.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
+	  <Text fill="WHITE" layoutX="12.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+      <Text layoutX="15.0" layoutY="73.0" text="There is already same Feedback Text!" wrappingWidth="334.294921875" AnchorPane.bottomAnchor="21.1591796875" AnchorPane.topAnchor="55.896484375">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+ 	</children>
+</AnchorPane>

@@ -1,0 +1,2 @@
+detect_term≤0.1sec Λ detect_length≥1m Λ sensor_error=false Λ malfunc_check_clear=true Λ path_check=true Λ gps_one=true
+

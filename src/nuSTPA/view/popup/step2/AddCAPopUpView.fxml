@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="298.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nuSTPA.view.popup.step2.AddCAPopUpController">
+	<children>
+      <Rectangle fill="WHITE" height="34.0" stroke="BLACK" width="298.0" />
+	  <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Control Action">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="24.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Controller">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="24.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ControlledProcess" wrappingWidth="88.57068634033203">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <ListView fx:id="controlActionListView" layoutX="10.0" layoutY="191.0" prefHeight="167.0" prefWidth="261.0" />
+      <Text layoutX="24.0" layoutY="178.0" text="Control Action">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+      <TextField fx:id="controlActionInput" layoutX="18.0" layoutY="383.0" prefHeight="27.0" prefWidth="142.0" />
+      <HBox alignment="CENTER" layoutX="175.0" layoutY="382.0" spacing="5.0">
+         <children>
+           <Button fx:id="add" onAction="#addCA" prefHeight="29.0" prefWidth="50.0" text="Add">
+               <HBox.margin>
+                  <Insets bottom="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+           <Button fx:id="remove" onAction="#removeCA" prefHeight="27.0" prefWidth="50.0" text="Del">
+               <HBox.margin>
+                  <Insets bottom="20.0" right="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+         </children>
+      </HBox>
+      <Button alignment="TOP_LEFT" layoutX="112.0" layoutY="426.0" mnemonicParsing="false" onAction="#setData" text="Confirm">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <ComboBox fx:id="controllerName" layoutX="121.0" layoutY="51.0" prefHeight="34.0" prefWidth="148.0" promptText="Controller Name" />
+      <ComboBox fx:id="controlledProcessName" layoutX="121.0" layoutY="105.0" prefHeight="34.0" prefWidth="148.0" promptText="Controlled Process Name" />
+ 	</children>
+</AnchorPane>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DARKSEAGREEN" height="65.0" stroke="TRANSPARENT" strokeType="INSIDE" width="350.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Label layoutX="17.0" layoutY="6.0" prefHeight="54.0" prefWidth="311.0" text="Warning!!" textFill="WHITE" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="6.0">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="89.0" lineSpacing="5.0" prefHeight="54.0" prefWidth="301.0" text="You should enter a link in format of [Index]." wrapText="true" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="89.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label layoutX="22.0" layoutY="143.0" prefHeight="23.0" prefWidth="292.0" text="ex) Hazard : [L1, L2] / Constraint : [H1]" textFill="#000000aa" wrapText="true" AnchorPane.leftAnchor="22.0" />
+   </children>
+</AnchorPane>

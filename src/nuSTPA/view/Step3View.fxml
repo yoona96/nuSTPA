@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nuSTPA.view.Step3Controller">
+   <children>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text layoutX="348.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step 3. Identify Unsafe Control Actions" textAlignment="CENTER" AnchorPane.topAnchor="13.482421875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="44.0">
+         <children>
+            <ComboBox fx:id="controllerComboBox" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0" promptText="Controller" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <ComboBox fx:id="controlActionComboBox" layoutX="159.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="188.0" promptText="Control Action" AnchorPane.leftAnchor="159.0" AnchorPane.topAnchor="5.0" />
+            <Button fx:id="addFromCTButton" layoutX="824.6666666666666" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFromCT" prefHeight="29.0" prefWidth="188.0" text="Get data from Context Table" textAlignment="CENTER" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+            <Button fx:id="toStep4Button" layoutX="659.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="143.0" text="Edit Loss Scenario" textAlignment="CENTER" AnchorPane.rightAnchor="346.66666666666663" AnchorPane.topAnchor="4.0" />
+            <Button fx:id="toCTButton" layoutX="659.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="143.0" text="Edit Context Table" textAlignment="CENTER" AnchorPane.rightAnchor="197.66666666666666" AnchorPane.topAnchor="4.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="84.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="84.0">
+         <children>
+            <TabPane fx:id="tabPane" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="CA 1">
+                     <content>
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="997.0">
+                           <children>
+                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="656.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <content>
+                                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="1000.0">
+                                       <children>
+                                          <TableView fx:id="ucaTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columns>
+                                           	 <TableColumn fx:id="CAColumnO" onEditCommit="#onEditChange" prefWidth="180.0" resizable="false" text="CA" />
+                    	      					 <TableColumn fx:id="providingColumnO" minWidth="4.0" onEditCommit="#onEditChange" prefWidth="180.0" resizable="false" text="Providing Causes Hazard" />
+                     					 	     <TableColumn fx:id="notProvidingColumnO" onEditCommit="#onEditChange" prefWidth="180.0" resizable="false" text="Not Providing Causes Hazard" />
+                  				    	     <TableColumn fx:id="incorrectColumnO" onEditCommit="#onEditChange" prefWidth="180.0" resizable="false" text="Incorrect Timing/Order" />
+                  							 <TableColumn fx:id="stoppedColumnO" onEditCommit="#onEditChange" prefWidth="180.0" resizable="false" text="Stopped Too Soon/Applied Too Long" />
+                  					         <TableColumn fx:id="linkColumnO" onEditCommit="#onEditChange" prefWidth="100.0" resizable="false" text="Link" />
+                                           </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
