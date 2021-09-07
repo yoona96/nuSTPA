@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.layout.GridData;
+//import org.eclipse.swt.layout.GridLayout;
+//import org.eclipse.swt.widgets.Composite;
+//import org.eclipse.swt.widgets.Display;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.swt.widgets.Text;
 
 import nuSTPA.model.ct.nuFTA.model.CutsetNode;
 import nuSTPA.model.ct.nuFTA.model.FaultTreeNode;
@@ -383,17 +383,17 @@ public class FormulaMaker {
 	}
 
 	public void printAllCutset(FileWriter fWriter) {
-		Shell shell = new Shell(Display.getCurrent());
-		shell.setText("Minimal Cut-Sets of the Software Fault Tree");
-		Composite composite = new Composite(shell, SWT.BORDER);
-		composite.setLayout(new GridLayout(1, false));
-		final GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessVerticalSpace = true;
-		composite.setLayoutData(gridData);
-		Text mcsText = new Text(composite, SWT.V_SCROLL | SWT.WRAP);
+//		Shell shell = new Shell(Display.getCurrent());
+//		shell.setText("Minimal Cut-Sets of the Software Fault Tree");
+//		Composite composite = new Composite(shell, SWT.BORDER);
+//		composite.setLayout(new GridLayout(1, false));
+//		final GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+//		gridData.horizontalAlignment = SWT.FILL;
+//		gridData.grabExcessHorizontalSpace = true;
+//		gridData.verticalAlignment = SWT.FILL;
+//		gridData.grabExcessVerticalSpace = true;
+//		composite.setLayoutData(gridData);
+//		Text mcsText = new Text(composite, SWT.V_SCROLL | SWT.WRAP);
 		String allMCS = "";
 		String str = "";
 		String[] tmp;
@@ -462,10 +462,10 @@ public class FormulaMaker {
 				e.printStackTrace();
 			}
 		}
-		mcsText.setText(allMCS);
-		composite.pack();
-		shell.pack();
-		shell.open();
+//		mcsText.setText(allMCS);
+//		composite.pack();
+//		shell.pack();
+//		shell.open();
 	}
 
 	private void leafSetting(CutsetNode parent, CutsetNode tree) {

@@ -30,81 +30,83 @@ import nuSTPA.model.step4.Step4DataStore;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ProjectXML {
 
-	// --------------------------- LHC --------------------------
-	Step1DataStore lhcDB = new Step1DataStore();
+	// --------------------------- Step1 --------------------------
+	Step1DataStore Step1DB = new Step1DataStore();
 	List<Step1> lossList = new ArrayList<Step1>();
 	List<Step1> hazardList = new ArrayList<Step1>();
 	List<Step1> constraintList = new ArrayList<Step1>();
-	// --------------------------- LHC --------------------------
+	// --------------------------- Step1 --------------------------
 
 
-	// --------------------------- CSE --------------------------
+	// --------------------------- Step2 --------------------------
 	private ObservableList<Controller> controllers;
 	private ObservableList<ControlAction> controlActions;
 	private ObservableList<Feedback> feedbacks;
 	private ObservableList<Text> texts;
 	private int curId;
-	// --------------------------- CSE --------------------------
+	// --------------------------- Step2 --------------------------
 
 
-	// --------------------------- UTM --------------------------
+	// --------------------------- Step3 --------------------------
 	ObservableList<Step3> UCA = FXCollections.observableArrayList();
 	ObservableList<Step3DataStore> UCAList = FXCollections.observableArrayList();
-	// --------------------------- UTM --------------------------
+	// --------------------------- Step3 --------------------------
 
 
-	// --------------------------- PMM --------------------------
+	// --------------------------- Pmv --------------------------
 	private ObservableList<ProcessModel> processModel = FXCollections.observableArrayList();
 	private ArrayList<ArrayList<String>> inputVariables = new ArrayList<ArrayList<String>>();
 	private ObservableList<String> outputVariables = FXCollections.observableArrayList();
-	// --------------------------- PMM --------------------------
+	private ArrayList<String> selectedFODs = new ArrayList<String>();
+	private ObservableList<String> selectedOutputs = FXCollections.observableArrayList();
+	// --------------------------- Pmv --------------------------
 
 
-	// --------------------------- CTM --------------------------
-	ObservableList<CT> CTM = FXCollections.observableArrayList();
-	ObservableList<CTDataStore> CTMList = FXCollections.observableArrayList();
-	// --------------------------- CTM --------------------------
+	// --------------------------- CT --------------------------
+	ObservableList<CT> CT = FXCollections.observableArrayList();
+	ObservableList<CTDataStore> CTList = FXCollections.observableArrayList();
+	// --------------------------- CT --------------------------
 
 
-	// --------------------------- LS ---------------------------
-	Step4DataStore lsDB = new Step4DataStore();
-	List<Step4> lsList = new ArrayList<Step4>();
-	// --------------------------- LS ---------------------------
+	// --------------------------- Step4 ---------------------------
+	Step4DataStore Step4DB = new Step4DataStore();
+	List<Step4> Step4List = new ArrayList<Step4>();
+	// --------------------------- Step4 ---------------------------
 
 
-	// --------------------------- LHC --------------------------
-	@XmlElement(name = "LHC-loss")
+	// --------------------------- Step1 --------------------------
+	@XmlElement(name = "Step1 - Loss")
 	public List<Step1> getLossList(){
-		return this.lhcDB.getLossTableList();
+		return this.Step1DB.getLossTableList();
 	}
 
 	public void setLossList(List<Step1> lossList) {
-		this.lhcDB.getLossTableList().setAll(lossList);
+		this.Step1DB.getLossTableList().setAll(lossList);
 	}
 
-	@XmlElement(name = "LHC-hazard")
+	@XmlElement(name = "Step1 - Hazard")
 	public List<Step1> getHazardList(){
-		return this.lhcDB.getHazardTableList();
+		return this.Step1DB.getHazardTableList();
 	}
 
 	public void setHazardList(List<Step1> hazardList) {
-		this.lhcDB.getHazardTableList().setAll(hazardList);
+		this.Step1DB.getHazardTableList().setAll(hazardList);
 	}
 
-	@XmlElement(name = "LHC-constraint")
+	@XmlElement(name = "Step1 - Safety Constraint")
 	public List<Step1> getConstraintList(){
-		return this.lhcDB.getConstraintTableList();
+		return this.Step1DB.getConstraintTableList();
 	}
 
 	public void setConstraintList(List<Step1> constraintList) {
-		this.lhcDB.getConstraintTableList().setAll(constraintList);
+		this.Step1DB.getConstraintTableList().setAll(constraintList);
 	}
-	// --------------------------- LHC --------------------------
+	// --------------------------- Step1 --------------------------
 
 
 
-	// --------------------------- CSE --------------------------
-	@XmlElement(name = "CSE-controller")
+	// --------------------------- Step2 --------------------------
+	@XmlElement(name = "Step2 - Controller")
 	public ObservableList<Controller> getControllers() {
 		return controllers;
 	}
@@ -113,7 +115,7 @@ public class ProjectXML {
 		this.controllers = observableList;
 	}
 
-	@XmlElement(name = "CSE-control-Actions")
+	@XmlElement(name = "Step2 - Control Actions")
 	public ObservableList<ControlAction> getControlActions() {
 		return controlActions;
 	}
@@ -122,7 +124,7 @@ public class ProjectXML {
 		this.controlActions = observableList;
 	}
 
-	@XmlElement(name = "CSE-feedbacks")
+	@XmlElement(name = "Step2 - Feedbacks")
 	public ObservableList<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
@@ -131,7 +133,7 @@ public class ProjectXML {
 		this.feedbacks = observableList;
 	}
 
-	@XmlElement(name = "CSE-texts")
+	@XmlElement(name = "Step2 - Texts")
 	public ObservableList<Text> getTexts() {
 		return texts;
 	}
@@ -140,7 +142,7 @@ public class ProjectXML {
 		this.texts = texts;
 	}
 
-	@XmlElement(name = "cur-Id")
+	@XmlElement(name = "current Controller Id")
 	public int getCurId() {
 		return curId;
 	}
@@ -148,13 +150,13 @@ public class ProjectXML {
 	public void setCurId(int id) {
 		this.curId = id;
 	}
-	// --------------------------- CSE --------------------------
+	// --------------------------- Step2 --------------------------
 
 
 
 
-	// --------------------------- UTM --------------------------
-	@XmlElement(name = "UCA-List")
+	// --------------------------- Step3 --------------------------
+	@XmlElement(name = "Step3 - UCA List")
 	public ObservableList<Step3DataStore> getUCADataStoreList() {
 		return this.UCAList;
 	}
@@ -171,12 +173,12 @@ public class ProjectXML {
 	public void setUCA(ObservableList<Step3> UCA) {
 		this.UCA = UCA;
 	}
-	// --------------------------- UTM --------------------------
+	// --------------------------- Step3 --------------------------
 
 
 
-	// --------------------------- PMM --------------------------
-	@XmlElement(name = "PMM-process-model")
+	// --------------------------- Pmv --------------------------
+	@XmlElement(name = "Pmv - Process Model")
 	public ObservableList<ProcessModel> getProcessModel(){
 		return processModel;
 	}
@@ -185,7 +187,7 @@ public class ProjectXML {
 		this.processModel = pm;
 	}
 
-	@XmlElement(name = "PMM-total-selected-output")
+	@XmlElement(name = "Pmv - Total Outputs")
 	public ObservableList<String> getOutputList(){
 		return outputVariables;
 	}
@@ -194,8 +196,8 @@ public class ProjectXML {
 		this.outputVariables = outputList;
 	}
 
-	@XmlElementWrapper(name="PMM-input-list")
-	@XmlElement(name = "Input-variables")
+	@XmlElementWrapper(name="Pmv - Input List")
+	@XmlElement(name = "Input Variables")
 	public ArrayList<ArrayList<String>> getInputList(){
 		return inputVariables;
 	}
@@ -203,55 +205,73 @@ public class ProjectXML {
 	public void setIntputList(ArrayList<ArrayList<String>> inputList) {
 		this.inputVariables = inputList;
 	}
-
-	// --------------------------- CTM --------------------------
-	@XmlElement(name = "CTM-List")
-	public ObservableList<CTDataStore> getCtmDataStoreList() {
-		return this.CTMList;
+	
+	public ArrayList<String> getSelectedFODs(){
+		return selectedFODs;
+	}
+	
+	public void setSelectedFODs(ArrayList<String> fodList) {
+		this.selectedFODs = fodList;
+	}
+	
+	public ObservableList<String> getSelectedOutputs() {
+		return selectedOutputs;
+	}
+	
+	public void setSelectedOutputs(ObservableList<String> selectedOutputs) {
+		this.selectedOutputs = selectedOutputs;
+	}
+	// --------------------------- Pmv --------------------------
+	
+	
+	// --------------------------- CT --------------------------
+	@XmlElement(name = "CT - List")
+	public ObservableList<CTDataStore> getCTDataStoreList() {
+		return this.CTList;
 	}
 
-	public void setCTMList(ObservableList<CTDataStore> CTMList) {
-		this.CTMList = CTMList;
+	public void setCTList(ObservableList<CTDataStore> CTList) {
+		this.CTList = CTList;
 	}
 
 
-	public ArrayList<String> getCTMControllerName(){
+	public ArrayList<String> getCTControllerName(){
 		ArrayList<String> controllerNames = new ArrayList<String>();
-		for(int i=0;i<CTMList.size();i++){
-			for(int j=0;j<CTMList.get(i).getCtTableList().size();j++){
-				controllerNames.add(CTMList.get(i).getCtTableList().get(j).getControllerName());
+		for(int i=0;i<CTList.size();i++){
+			for(int j=0;j<CTList.get(i).getCtTableList().size();j++){
+				controllerNames.add(CTList.get(i).getCtTableList().get(j).getControllerName());
 			}
 		}
 		return controllerNames;
 	}
 
-	public ArrayList<String> getCTMCA(){
+	public ArrayList<String> getCTCA(){
 		ArrayList<String> ca = new ArrayList<String>();
-		for(int i=0;i<CTMList.size();i++){
-			for(int j=0;j<CTMList.get(i).getCtTableList().size();j++){
-				ca.add(CTMList.get(i).getCtTableList().get(j).getControlAction());
+		for(int i=0;i<CTList.size();i++){
+			for(int j=0;j<CTList.get(i).getCtTableList().size();j++){
+				ca.add(CTList.get(i).getCtTableList().get(j).getControlAction());
 			}
 		}
 		return ca;
 	}
 
-	public ArrayList<String> getCTMCases(){
+	public ArrayList<String> getCTCases(){
 		ArrayList<String> cases = new ArrayList<String>();
-		for(int i=0;i<CTMList.size();i++){
-			for(int j=0;j<CTMList.get(i).getCtTableList().size();j++){
-				cases.add(CTMList.get(i).getCtTableList().get(j).getCasesValue());
+		for(int i=0;i<CTList.size();i++){
+			for(int j=0;j<CTList.get(i).getCtTableList().size();j++){
+				cases.add(CTList.get(i).getCtTableList().get(j).getCasesValue());
 			}
 		}
 		return cases;
 	}
 
-	public ArrayList<String[]> getCTMContext(){
+	public ArrayList<String[]> getCTContext(){
 		ArrayList<String[]> contextsArray = new ArrayList<String[]>();
-		for(int i=0;i<CTMList.size();i++){
-			for(int j=0;j<CTMList.get(i).getCtTableList().size();j++){
-				String[] contexts =  new String[CTMList.get(i).getCtTableList().get(0).getContexts().length];
+		for(int i=0;i<CTList.size();i++){
+			for(int j=0;j<CTList.get(i).getCtTableList().size();j++){
+				String[] contexts =  new String[CTList.get(i).getCtTableList().get(0).getTotalContexts().size()];
 				for(int k=0;k<contexts.length;k++) {
-					contexts[k] = CTMList.get(i).getCtTableList().get(j).getContext(k);
+					contexts[k] = CTList.get(i).getCtTableList().get(j).getTotalContext(k);
 				}
 				contextsArray.add(contexts);
 			}
@@ -259,30 +279,30 @@ public class ProjectXML {
 		return contextsArray;
 	}
 
-	public ArrayList<String> getCTMHazardous(){
+	public ArrayList<String> getCTHazardous(){
 		ArrayList<String> hazardous = new ArrayList<String>();
-		for(int i=0;i<CTMList.size();i++){
-			for(int j=0;j<CTMList.get(i).getCtTableList().size();j++){
-				hazardous.add(CTMList.get(i).getCtTableList().get(j).getHazardous().toString());
+		for(int i=0;i<CTList.size();i++){
+			for(int j=0;j<CTList.get(i).getCtTableList().size();j++){
+				hazardous.add(CTList.get(i).getCtTableList().get(j).getHazardous().toString());
 			}
 		}
 		return hazardous;
 	}
 
-	public void setCTM(ObservableList<CT> CTM) {
-		this.CTM = CTM;
+	public void setCT(ObservableList<CT> CT) {
+		this.CT = CT;
 	}
-	// --------------------------- CTM --------------------------
+	// --------------------------- CT --------------------------
 
 
-	// --------------------------- LS ---------------------------
-	@XmlElement(name = "LS-loss-scenario")
-	public List<Step4> getLsList(){
-		return this.lsDB.getLsList();
+	// --------------------------- Step4 ---------------------------
+	@XmlElement(name = "Step4 - Loss Scenario")
+	public List<Step4> getStep4List(){
+		return this.Step4DB.getStep4List();
 	}
 
-	public void setLsList(List<Step4> lsList) {
-		this.lsDB.getLsList().setAll(lsList);
+	public void setStep4List(List<Step4> Step4List) {
+		this.Step4DB.getStep4List().setAll(Step4List);
 	}
-	// --------------------------- LS ---------------------------
+	// --------------------------- Step4 ---------------------------
 }

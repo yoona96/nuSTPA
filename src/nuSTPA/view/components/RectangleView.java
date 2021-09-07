@@ -38,10 +38,9 @@ public class RectangleView extends StackPane {
 	Components dataStore;
 	private DoubleProperty num;
 //	public DoubleProperty width;
-	private Label label;
-	private ListView<String> pmListView = new ListView<String>();
+	private Label label;	
 	
-	
+	//also add process model to controller rectangle view
 	public RectangleView(DoubleProperty x, DoubleProperty y, String string, Integer integer, Components dataStore, ObservableList<String> pmList) {
 	
 		
@@ -49,7 +48,7 @@ public class RectangleView extends StackPane {
 		this.id = integer;
 		
 //		width = new SimpleDoubleProperty(150);
-		this.rect = new Rectangle(100, 100);
+		this.rect = new Rectangle(100, 150);
 		this.rect.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
 		
 		this.x = x;
@@ -83,6 +82,7 @@ public class RectangleView extends StackPane {
 		
 		vbox.getChildren().add(label);
 		
+		ListView<String> pmListView = new ListView<String>();
 		if(pmListView.getItems() != null) {
 //			this.rect.setHeight(this.rect.getHeight()*1.5);
 //			pmListView.setPrefHeight(this.rect.getHeight()*0.5);
@@ -91,6 +91,7 @@ public class RectangleView extends StackPane {
 			hbox.getChildren().add(pmListView);
 			hbox.setAlignment(Pos.CENTER);
 			hbox.setPadding(new Insets(10));
+			pmListView.getItems().addAll(pmList);
 		}
 //		else {
 //			this.rect.setHeight(this.rect.getHeight());
@@ -118,11 +119,6 @@ public class RectangleView extends StackPane {
 				this.rect.setWidth(50 * num[0] + 100 * num[1]);
 			}
 		}	
-	}
-	
-	//add process model to controller rectangle view
-	public void addPmList(ObservableList<String> pmList) { //resize height of rectangle
-		pmListView.getItems().addAll(pmList);
 	}
 	
 	//make a node movable by dragging it around with the mouse.

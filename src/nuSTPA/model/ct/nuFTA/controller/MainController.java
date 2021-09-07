@@ -3,12 +3,12 @@ package nuSTPA.model.ct.nuFTA.controller;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+//import org.eclipse.e4.ui.model.application.MApplication;
+//import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+//import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
+//import org.eclipse.e4.ui.workbench.modeling.EModelService;
+//import org.eclipse.e4.ui.workbench.modeling.EPartService;
+//import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 import nuSTPA.model.ct.nuFTA.model.CutsetNode;
 import nuSTPA.model.ct.nuFTA.model.FaultTreeNode;
@@ -162,41 +162,41 @@ public class MainController {
 		this.selectedPart = selectedPart;
 	}
 
-	public void showFT() {
-		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
-
-		MPart mFTPart = partService.createPart("nufta.partdescriptor.faulttree");
-		mFTPart.setLabel(root.getText() + " (Fault Tree)");
-		stack.getChildren().add(mFTPart);
-		partService.activate(mFTPart);
-		partService.showPart(mFTPart, PartState.ACTIVATE);
-
-		MPart mAFTPart = partService.createPart("nufta.partdescriptor.abstractfaulttree");
-		mAFTPart.setLabel(root.getText() + " (Abstract)");
-		stack.getChildren().add(mAFTPart);
-		partService.activate(mAFTPart);
-		partService.showPart(mAFTPart, PartState.ACTIVATE);
-	}
-
-	public void showTemplate(String selectedTemplate) {
-		this.selectedTemplate = selectedTemplate;
-		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
-		MPart mTemplatePart = partService.createPart("nufta.partdescriptor.template");
-		mTemplatePart.setLabel(selectedTemplate + " (Template)");
-		stack.getChildren().add(mTemplatePart);
-		partService.activate(mTemplatePart);
-		partService.showPart(mTemplatePart, PartState.ACTIVATE);
-	}
-	
-	public void showTimeTemplate(String period) {
-		this.period = period;
-		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
-		MPart mTemplatePart = partService.createPart("nufta.partdescriptor.timetemplate");
-		mTemplatePart.setLabel("One cycle : " + period);
-		stack.getChildren().add(mTemplatePart);
-		partService.activate(mTemplatePart);
-		partService.showPart(mTemplatePart, PartState.ACTIVATE);
-	}
+//	public void showFT() {
+//		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
+//
+//		MPart mFTPart = partService.createPart("nufta.partdescriptor.faulttree");
+//		mFTPart.setLabel(root.getText() + " (Fault Tree)");
+//		stack.getChildren().add(mFTPart);
+//		partService.activate(mFTPart);
+//		partService.showPart(mFTPart, PartState.ACTIVATE);
+//
+//		MPart mAFTPart = partService.createPart("nufta.partdescriptor.abstractfaulttree");
+//		mAFTPart.setLabel(root.getText() + " (Abstract)");
+//		stack.getChildren().add(mAFTPart);
+//		partService.activate(mAFTPart);
+//		partService.showPart(mAFTPart, PartState.ACTIVATE);
+//	}
+//
+//	public void showTemplate(String selectedTemplate) {
+//		this.selectedTemplate = selectedTemplate;
+//		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
+//		MPart mTemplatePart = partService.createPart("nufta.partdescriptor.template");
+//		mTemplatePart.setLabel(selectedTemplate + " (Template)");
+//		stack.getChildren().add(mTemplatePart);
+//		partService.activate(mTemplatePart);
+//		partService.showPart(mTemplatePart, PartState.ACTIVATE);
+//	}
+//	
+//	public void showTimeTemplate(String period) {
+//		this.period = period;
+//		MPartStack stack = (MPartStack) modelService.find("nufta.partstack.frame", app);
+//		MPart mTemplatePart = partService.createPart("nufta.partdescriptor.timetemplate");
+//		mTemplatePart.setLabel("One cycle : " + period);
+//		stack.getChildren().add(mTemplatePart);
+//		partService.activate(mTemplatePart);
+//		partService.showPart(mTemplatePart, PartState.ACTIVATE);
+//	}
 
 	public String getPeriod() {
 		return period;

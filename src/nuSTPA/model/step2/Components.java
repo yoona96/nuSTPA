@@ -125,10 +125,7 @@ public class Components {
 				lv.getItems().add("");
 				processModels.add(i, lv);
 			}
-			System.out.println("which one is null? components : " + pmList);
-			System.out.println("which one is null? components : " + name);
 			controllers.get(i).setProcessModel(pmList, name);
-			System.out.println(processModels.get(i).getItems());
 //			lv.getItems().clear();
 		}
 //		for(ListView<String> lv : processModels) {

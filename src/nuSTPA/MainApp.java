@@ -52,7 +52,7 @@ public class MainApp extends Application {
 	public static ObservableList<CTDataStore> ctDataStoreList = FXCollections.observableArrayList();
 	public static ObservableList<CT> ctmDataStore = FXCollections.observableArrayList();
 	public static Step4DataStore lsDataStore;
-	public static PmvDataStore pmmDB;
+	public static PmvDataStore pmvDB;
 	 
 	 
 	@Override
@@ -75,7 +75,7 @@ public class MainApp extends Application {
 		components = new Components();
 		lhcDataStore = new Step1DataStore();
 		lsDataStore = new Step4DataStore();
-		pmmDB = new PmvDataStore();
+		pmvDB = new PmvDataStore();
 	}
 	
 	/**
@@ -384,19 +384,19 @@ public class MainApp extends Application {
 		      //--------------------------- UTM --------------------------
 
 			 // --------------------------- PMM --------------------------
-		        pmmDB.setProcessModel(projectXML.getProcessModel());
-		        pmmDB.setInputList(projectXML.getInputList());
-		        pmmDB.setOutputList(projectXML.getOutputList());
+		        pmvDB.setProcessModel(projectXML.getProcessModel());
+		        pmvDB.setInputList(projectXML.getInputList());
+		        pmvDB.setOutputList(projectXML.getOutputList());
 			 // --------------------------- PMM --------------------------
 
 			 // --------------------------- CTM --------------------------
 		        ctmDataStore.remove(0, ctmDataStore.size()-1);
 		        ctDataStoreList.remove(0, ctDataStoreList.size()-1);
-		        ctDataStoreList.addAll(projectXML.getCtmDataStoreList());
+		        ctDataStoreList.addAll(projectXML.getCTDataStoreList());
    	         // --------------------------- CTM --------------------------
 
 		     // --------------------------- LS ---------------------------
-		        lsDataStore.getLsList().addAll(projectXML.getLsList());
+		        lsDataStore.getStep4List().addAll(projectXML.getStep4List());
 		     // --------------------------- LS ---------------------------
 
 		        setFilePath(file);
@@ -445,18 +445,18 @@ public class MainApp extends Application {
 	     // --------------------------- UTM --------------------------
 
 		 // --------------------------- PMM --------------------------
-	        projectXML.setProcessModel(pmmDB.getProcessModel());
-	        projectXML.setOutputList(pmmDB.getOutputList());
-	        projectXML.setIntputList(pmmDB.getInputList());
+	        projectXML.setProcessModel(pmvDB.getProcessModel());
+	        projectXML.setOutputList(pmvDB.getOutputList());
+	        projectXML.setIntputList(pmvDB.getInputList());
     	 // --------------------------- PMM --------------------------
 
 		 // --------------------------- CTM --------------------------
-	        projectXML.setCTM(ctmDataStore);
-	        projectXML.setCTMList(ctDataStoreList);
+	        projectXML.setCT(ctmDataStore);
+	        projectXML.setCTList(ctDataStoreList);
 	     // --------------------------- CTM --------------------------
 
 	     // --------------------------- LS ---------------------------
-	        projectXML.setLsList(lsDataStore.getLsList());
+	        projectXML.setStep4List(lsDataStore.getStep4List());
 	     // --------------------------- LS ---------------------------
 
 	        m.marshal(projectXML, file);

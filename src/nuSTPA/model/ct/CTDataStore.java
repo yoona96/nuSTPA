@@ -12,9 +12,10 @@ public class CTDataStore {
 
 	private String ctController, ctControlAction;
 	private ArrayList<String> ctCases = new ArrayList<String>();
-	private ArrayList<String[]> ctContexts = new ArrayList<String[]>();
+	private ArrayList<ArrayList<String>> ctContexts = new ArrayList<ArrayList<String>>();
 	private ArrayList<String> ctHazardous = new ArrayList<String>();
-	private ArrayList<String[]> ctContextComboBoxs = new ArrayList<String[]>();
+	private ArrayList<ArrayList<String>> ctContextComboBoxs = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> totalContexts = new ArrayList<ArrayList<String>>();
 	private int rowSize;
 	
 	private static ArrayList<String> outputTypeList = new ArrayList<String>();
@@ -29,18 +30,18 @@ public class CTDataStore {
 			ctControlAction = this.ctTableList.get(0).getControlAction();
 			ArrayList<String> tempCases = new ArrayList<String>();
 			ArrayList<String> tempHazardous = new ArrayList<String>();
-			ArrayList<String[]> tempContexts = new ArrayList<String[]>();
-			ArrayList<String[]> tempContextComboBoxs = new ArrayList<String[]>();
+			ArrayList<ArrayList<String>> tempContexts = new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> tempContextComboBoxs = new ArrayList<ArrayList<String>>();
 			for(int i = 0; i < rowSize; i++) {
 				tempCases.add(this.ctTableList.get(i).getCasesValue());
 				tempHazardous.add(this.ctTableList.get(i).getHazardousValue());
-				tempContexts.add(this.ctTableList.get(i).getContexts());
-				tempContextComboBoxs.add(this.ctTableList.get(i).getContextComboBoxVals());
+				tempContexts.add(this.ctTableList.get(i).getTotalContexts());
+//				tempContextComboBoxs.add(this.ctTableList.get(i).getContextComboBoxVals());
 			}
 			ctCases = tempCases;
 			ctHazardous = tempHazardous;
 			ctContexts = tempContexts;
-			ctContextComboBoxs = tempContextComboBoxs;
+			setCtContextComboBoxs(tempContextComboBoxs);
 			
 		}
 		
@@ -62,10 +63,10 @@ public class CTDataStore {
 			for(int i = 0; i < rowSize; i++) {
 	    		ComboBox<String> casesComboBox = new ComboBox<String> (casesCombo);
 	    		ComboBox<String> hazardousComboBox = new ComboBox(hazardousOX);
-	    		String[] contextComboBoxs = new String[ctContextComboBoxs.size()];
+	    		ArrayList<String> contextComboBoxs = new ArrayList<String>();
 				casesComboBox.setValue(this.ctCases.get(i));
 				hazardousComboBox.setValue(this.ctHazardous.get(i));
-				this.ctTableList.add(new CT(getCtController(), ctControlAction, casesComboBox, i+1, ctContexts.get(i), contextComboBoxs, hazardousComboBox));
+				this.ctTableList.add(new CT(getCtController(), ctControlAction, casesComboBox, i+1, totalContexts.get(i), hazardousComboBox));
 				ctTableList.get(i).setCasesValue(this.ctCases.get(i));
 				ctTableList.get(i).setHazardousValue(this.ctHazardous.get(i));
 				final int temp = i;
@@ -116,14 +117,38 @@ public class CTDataStore {
 		this.ctCases = cases;
 	}
 	
-	public ArrayList<String[]> getContexts() {
+	public ArrayList<ArrayList<String>> getContexts() {
 		return this.ctContexts;
 	}
 
-	public void setContexts(ArrayList<String[]> contexts) {
+	public void setContexts(ArrayList<ArrayList<String>> contexts) {
 		this.ctContexts = contexts;
 	}
 	
+	public ArrayList<ArrayList<String>> getCtContextComboBoxs() {
+		return ctContextComboBoxs;
+	}
+
+
+
+	public void setCtContextComboBoxs(ArrayList<ArrayList<String>> ctContextComboBoxs) {
+		this.ctContextComboBoxs = ctContextComboBoxs;
+	}
+
+
+
+	public ArrayList<ArrayList<String>> getTotalContexts() {
+		return totalContexts;
+	}
+
+
+
+	public void setTotalContexts(ArrayList<ArrayList<String>> totalContexts) {
+		this.totalContexts = totalContexts;
+	}
+
+
+
 	public ArrayList<String> getHazardous() {
 		return this.ctHazardous;
 	}

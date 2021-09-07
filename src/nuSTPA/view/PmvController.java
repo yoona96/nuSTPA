@@ -69,7 +69,8 @@ public class PmvController {
 	// connect controller&control action to new tab
 	private XmlReader xmlReader;
 	private MainApp mainApp;
-	private File selectedFile;
+//	private File selectedFile;
+	private ArrayList<File> selectedFiles = new ArrayList<File>();
 	private Components components;
 	private PmvDataStore pmvDB;
 
@@ -98,8 +99,8 @@ public class PmvController {
 
 	}
 	
-	public File getSelectedFile() {
-		return selectedFile;
+	public File getSelectedFile(int i) {
+		return selectedFiles.get(i);
 	}
 
 	// Get Controller, all of CA from CSE DataStore
@@ -110,6 +111,9 @@ public class PmvController {
 		controllerList.getItems().add(controller.getName().toString());
 		controllerList.setValue(controller.getName().toString());
 		controllerList.setDisable(true);
+		if(!outputList.getItems().isEmpty()) {
+			outputList.getItems();
+		}
 
 		tabPane.getTabs().clear();
 
@@ -132,6 +136,20 @@ public class PmvController {
 		for(ProcessModel p : pmvDB.getProcessModel()) {
 			if(p.getControllerName().equals(controller))
 				addTab(p);
+		}
+	}
+	
+	private void showOutputList(String controller, String controlAction) {
+		ObservableList<String> tempList = FXCollections.observableArrayList();
+//		tempList.clear();
+		for(int i = 0; i < pmvDB.getProcessModel().size(); i++) {
+			tempList = pmvDB.getProcessModel().get(i).getTotalOutputs();
+			if(pmvDB.getProcessModel().get(i).getControllerName().equals(controller) && pmvDB.getProcessModel().get(i).getControlActionName().equals(controlAction)) {
+				if(tempList != null) {
+					outputList.getItems().addAll(tempList);
+					System.out.println("this is outputList of selected controller & ca : " + tempList);
+				}
+			}
 		}
 	}
 
@@ -162,6 +180,13 @@ public class PmvController {
 	//show selected file on screen
 	@FXML
 	public void addNuSCRFile() {
+//		if(tabPane.getSelectionModel().getSelectedItem() == null) {
+//			Alert alert = new Alert(AlertType.WARNING);
+//			alert.setTitle("Warning");
+//			alert.setHeaderText("No selected tab");
+//			alert.setContentText("You have to make tab with new tab button");
+//			alert.showAndWait();
+//		}else {
 		//file chooser
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Get output variables");
@@ -171,13 +196,13 @@ public class PmvController {
 		ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
 		fc.getExtensionFilters().add(extFilter);
 
-		selectedFile = fc.showOpenDialog(null);
-		if (selectedFile != null) {
+		selectedFiles.add(fc.showOpenDialog(null));
+		if (selectedFiles != null) {
 //			dataStore.setFilePath(selectedFile);
-			fileName.setText(selectedFile.getName());
+			fileName.setText(selectedFiles.get(selectedFiles.size()-1).getName());
 
 			try {
-				FileInputStream fis = new FileInputStream(selectedFile);
+				FileInputStream fis = new FileInputStream(selectedFiles.get(selectedFiles.size()-1));
 				BufferedInputStream bis = new BufferedInputStream(fis);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -188,6 +213,7 @@ public class PmvController {
 			alert.setHeaderText("No file selected");
 			alert.setContentText("You did not choose file to import");
 		}
+//		}
 	}
 
 	@FXML
@@ -202,11 +228,10 @@ public class PmvController {
 	public void applyNuSCRFile1() throws ParserConfigurationException, SAXException, IOException {
 		// clear all items
 		addFile.getChildren().clear();
-		outputList.getItems().clear();
 	    outputList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		// Create XmlReader constructor
-		ArrayList<String> showGroupNodesItems = xmlReader.parseXml(selectedFile);
+		ArrayList<String> showGroupNodesItems = xmlReader.parseXml(selectedFiles.get(selectedFiles.size()-1));
 		
 		//no root FOD(don't fit NuSCR format)
 		if(xmlReader.getRootFod().equals("")) {
@@ -231,6 +256,7 @@ public class PmvController {
 		
 		//show FODs that are available
 		SelectFODController FODcontroller = loader.getController();
+		FODcontroller.clear();
 		FODcontroller.setGroupItems(showGroupNodesItems);
 		FODcontroller.setRootFOD(XmlReader.getRootFod());
 		
@@ -242,7 +268,7 @@ public class PmvController {
 				}else if(FODcontroller.confirmed == true) {
 					// outputList.getItems().addAll(FODcontroller.selectedItems());
 					
-					ObservableList<String> outputlist = FXCollections.observableArrayList();
+					ObservableList<String> totalOutputList = FXCollections.observableArrayList();
 					// if you select FOD, get outputs of selected FOD
 					
 					int i = xmlReader.fodNodeNameList.indexOf(FODcontroller.selectedItem());
@@ -254,20 +280,27 @@ public class PmvController {
 					ObservableList<String> outputs = xmlReader.getOutputs();
 					// System.out.println("outputs: "+outputs);
 					for (String datas : outputs) {
-						outputlist.add(datas);
+						totalOutputList.add(datas);
 					}
 				
 					//if output list has redundant data, remove from list
-					for(int j = 0; j < outputlist.size(); j++) {
-						for(int k = j; k < outputlist.size(); k++) {
-							if(outputlist.get(j).trim().equals(outputlist.get(k).trim())) {
-								outputlist.remove(k);
+					for(int j = 0; j < totalOutputList.size(); j++) {
+						for(int k = j; k < totalOutputList.size(); k++) {
+							if(totalOutputList.get(j).trim().equals(totalOutputList.get(k).trim())) {
+								totalOutputList.remove(k);
 							}
 						}
 					}
-//					System.out.println(outputlist);
-					outputList.setItems(outputlist);
-					pmvDB.setOutputList(outputlist); // store every output list in DB --> is this necessary?
+					
+					//get index of selected controller in process model list
+					for(int k = 0; k < pmvDB.getProcessModel().size(); k++) {
+						if(pmvDB.getProcessModel().get(k).getControllerName().equals(controllerList.getValue())) {
+							pmvDB.getProcessModel().get(k).setTotalOutputs(totalOutputList); // store every output list in DB
+							System.out.println("adding total outputs into DB : " + pmvDB.getProcessModel().get(k).getTotalOutputs());
+						}
+					}
+					outputList.setItems(totalOutputList);
+					System.out.println("this is total output list : " + totalOutputList);
 				}
 			}
 		});
@@ -511,7 +544,7 @@ public class PmvController {
 			modVarStage.setResizable(false);
 			modVarStage.show();
 
-			modVarStage.setOnHidden((new EventHandler<WindowEvent>() {
+			modVarStage.setOnHidden(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent e) {
 					VariablePopUpController popup = loader.getController();
@@ -533,49 +566,13 @@ public class PmvController {
 						}
 					}
 				}
-			}));
-
+			});
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-//		//repeat targetIndices.size() - 1 times
-//		for(int i = 0; i < targetIndices.size() - 1; i++) {
-//			//compare each char of selected process models
-//			for(int j = 0; j < valueList.getItems().get(targetIndices.get(i)).length(); j++) {
-//				if(valueList.getItems().get(targetIndices.get(i)).charAt(j) == valueList.getItems().get(targetIndices.get(i + 1)).charAt(j) && diffString.length() == 0) {
-//					//if char matches, and there is no diffString, add charAt(j) to commonString1
-//					commonString1.append(valueList.getItems().get(targetIndices.get(i)).charAt(j));
-//				}else if(valueList.getItems().get(targetIndices.get(i)).charAt(j) == valueList.getItems().get(targetIndices.get(i + 1)).charAt(j) && i == 0) {
-//					if(!commonString2.toString().contains(String.valueOf(valueList.getItems().get(targetIndices.get(i)).charAt(j)))) {
-//						//if char matches, and there is diffString, add charAt(j) to commonString2
-//						commonString2.append(valueList.getItems().get(targetIndices.get(i)).charAt(j));
-//					}
-//				}else if(valueList.getItems().get(targetIndices.get(i)).charAt(j) != valueList.getItems().get(targetIndices.get(i + 1)).charAt(j) && i == 0) {
-//					//when char does not match,  	
-//					diffString.append(valueList.getItems().get(targetIndices.get(i)).charAt(j));
-//					diffString.append("/");
-//					diffString.append(valueList.getItems().get(targetIndices.get(i + 1)).charAt(j));
-//					diffString.append("/");
-//				}else if(valueList.getItems().get(targetIndices.get(i)).charAt(j) != valueList.getItems().get(targetIndices.get(i + 1)).charAt(j)){
-//					diffString.append(valueList.getItems().get(targetIndices.get(i + 1)).charAt(j));
-//					diffString.append("/");
-//				}
-//			}
-//		}
-//		diffString.replace(diffString.toString().lastIndexOf("/"), diffString.toString().lastIndexOf("/") + 1, "");
-//		
-//		String abstractedPM = commonString1.toString() + diffString.toString() + commonString2.toString(); 
-//		System.out.println("this is abstracted process model : " + abstractedPM);
-//		p.getProcessModelList().set(targetIndices.get(0), abstractedPM);
-//		
-//		int curTab = listViewList.indexOf(valueList);
-//		listViewList.get(curTab).getItems().set(targetIndices.get(0), abstractedPM);
-//		for(int i = 1; i < targetIndices.size(); i++) {
-//			listViewList.get(curTab).getItems().set(targetIndices.get(i), "abstracted, please remove");
-//		}
 	}
-      
+		
+		
 	// Show value edit popup
 	public void modifyPopUp(ProcessModel p, int oldvalueIndex,ListView<String> curList) {
 //		System.out.println("modify pop up executing...");
@@ -620,7 +617,7 @@ public class PmvController {
 //		System.out.println("\n**********************");
 //		System.out.println("initialize!! ");
 		// PMM, CSE Data Store
-		pmvDB = this.mainApp.pmmDB;
+		pmvDB = this.mainApp.pmvDB;
 		components = this.mainApp.components;
 		
 		addFile.setVisible(false);
@@ -639,6 +636,7 @@ public class PmvController {
 		    //if Controller Select, Change ControlAction ChoiceBox
 		    controllerList.setOnAction(event->{
 		       //clear all views
+				outputList.getItems().clear();
 		        tabPane.getTabs().clear();
 		        listViewList.clear();
 		        showControllerTab(controllerList.getValue());
@@ -662,8 +660,12 @@ public class PmvController {
 //			controllerName = dataStore.getControllerName();
 			selectController();
 		}
+		//show total output when controller & control action is selected
+		caList.setOnAction(event -> {
+			outputList.getItems().clear();
+			showOutputList(controllerList.getValue(), caList.getValue());
+		});
 		
-
 		addTabButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -716,7 +718,7 @@ public class PmvController {
 	public void applyNuSCRFile2() throws ParserConfigurationException, SAXException, IOException, NullPointerException {
 		//save output types in CT DB
 //		selectedNuSCRFile = pmvController.getSelectedFile();
-		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFile);
+		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFiles.get(selectedFiles.size() - 1));
 		ArrayList<String> tempList = new ArrayList<String>();
 		ArrayList<String> tempOutputList = new ArrayList<String>();
 		ListView<String> lv = new ListView<String>();

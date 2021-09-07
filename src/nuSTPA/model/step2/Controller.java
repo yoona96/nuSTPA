@@ -5,10 +5,13 @@ import java.util.Map;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.shape.Rectangle;
 import nuSTPA.view.components.RectangleView;
+import nuSTPA.MainApp;
 import nuSTPA.model.pmv.PmvDataStore;
 
 public class Controller {
@@ -61,10 +64,10 @@ public class Controller {
 	public void setProcessModel(ObservableList<String> processModel, String controllerName) {
 //		System.out.println(processModel);
 		this.processModel = processModel;
-		if(name.equals(controllerName))
-			System.out.println("which one is null? controller : " + r);
-			System.out.println("which one is null? controller : " + processModel);
-			r.addPmList(processModel);
+		if(name.equals(controllerName)) {
+			//대박. 해결했음.
+			RectangleView r = new RectangleView(new SimpleDoubleProperty(x), new SimpleDoubleProperty(y), controllerName, id, MainApp.components, processModel);
+		}
 	}
 	
 	public void setProcessModels(ObservableList<String> processModels) {

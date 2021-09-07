@@ -116,7 +116,7 @@ public class CTController {
 		
 		this.mainApp = mainApp;
 		ctDataStoreList = mainApp.ctDataStoreList;
-		this.pmvDB = mainApp.pmmDB;
+		this.pmvDB = mainApp.pmvDB;
 		totalData = ctDataStoreList;
 
 		processModels = new ArrayList<>();
@@ -184,57 +184,78 @@ public class CTController {
             }
         });
         hb.getChildren().add(fileButton);
+//        
+//        ArrayList<String> pmWithVals = new ArrayList<String>();
+//        for(int i = 0; i < processModels.size(); i++) {
+//            if(processModels.get(i).contains(":=")) {
+//            	pmWithVals.add(processModels.get(i));
+//            }
+//        }
+//        System.out.println("these are process model with values : " + pmWithVals);
         
-        ArrayList<String> pmWithVals = new ArrayList<String>();
-        for(int i = 0; i < processModels.size(); i++) {
-            if(processModels.get(i).contains(":=")) {
-            	pmWithVals.add(processModels.get(i));
-            }
-        }
-        System.out.println("these are process model with values : " + pmWithVals);
-        
-        final TextField[] addContexts = new TextField[processModels.size() - pmWithVals.size()];
-		for(int t = 0; t < processModels.size() - pmWithVals.size(); t++) {
-	        final TextField addContext = new TextField();
-	        addContext.setPromptText(processModels.get(t));
-			addContexts[t] = addContext;
-			hb.getChildren().addAll(addContexts[t]);
+        final ArrayList<TextField> addContexts = new ArrayList<TextField>();
+        final ArrayList<ComboBox<String>> getProcessModelVals = new ArrayList<ComboBox<String>>();
+		for(int t = 0; t < processModels.size(); t++) {
+			if(!processModels.get(t).contains(":")) {
+		        final TextField addContext = new TextField();
+		        addContext.setPromptText(processModels.get(t));
+		        addContexts.add(addContext);
+				hb.getChildren().add(addContext);
+			}else {
+				final ComboBox<String> getProcessModelVal = new ComboBox<String>();
+				ObservableList<String> pmVal = FXCollections.observableArrayList();
+				
+				getProcessModelVal.setValue(processModels.get(t).substring(0, processModels.get(t).lastIndexOf(":")).trim()); //this is variable part
+				String vals = processModels.get(t).substring(processModels.get(t).lastIndexOf("[") + 1, processModels.get(t).length() - 1).replace(" ", ""); //this is value part
+				pmVal.addAll(vals.split(","));
+				getProcessModelVal.setItems(pmVal);
+				getProcessModelVals.add(getProcessModelVal);
+				hb.getChildren().add(getProcessModelVal);
+			}
 		}
 		
-		final ComboBox[] getProcessModelVals = new ComboBox[pmWithVals.size()];
-		for(int i = 0; i < pmWithVals.size(); i++) {
-			final ComboBox<String> getProcessModelVal = new ComboBox<String>();
-			ObservableList<String> pmVal = FXCollections.observableArrayList();
-			
-			getProcessModelVal.setValue(pmWithVals.get(i).substring(0, pmWithVals.get(i).lastIndexOf(":")).trim()); //this is variable part
-			String vals = pmWithVals.get(i).substring(pmWithVals.get(i).lastIndexOf("[") + 1, pmWithVals.get(i).length() - 1).replace(" ", ""); //this is value part
-			pmVal.addAll(vals.split(","));
-			getProcessModelVal.setItems(pmVal);
-			getProcessModelVals[i] = getProcessModelVal;
-			hb.getChildren().addAll(getProcessModelVals[i]);
-		}
+		
+//		for(int i = 0; i < pmWithVals.size(); i++) {
+//			final ComboBox<String> getProcessModelVal = new ComboBox<String>();
+//			ObservableList<String> pmVal = FXCollections.observableArrayList();
+//			
+//			getProcessModelVal.setValue(pmWithVals.get(i).substring(0, pmWithVals.get(i).lastIndexOf(":")).trim()); //this is variable part
+//			String vals = pmWithVals.get(i).substring(pmWithVals.get(i).lastIndexOf("[") + 1, pmWithVals.get(i).length() - 1).replace(" ", ""); //this is value part
+//			pmVal.addAll(vals.split(","));
+//			getProcessModelVal.setItems(pmVal);
+//			getProcessModelVals[i] = getProcessModelVal;
+//			hb.getChildren().addAll(getProcessModelVals[i]);
+//		}
 
         final Button addButton = new Button("Add content");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
         		int temp = contextTable.getItems().size();
-                String[] contexts = new String[processModels.size() - pmWithVals.size()];
-        		for(int t = 0; t < processModels.size() - pmWithVals.size(); t++) {
-        			contexts[t] = addContexts[t].getText();
-        			addContexts[t].clear();
+//                ArrayList<String> contexts = new ArrayList<String>();
+//        		ArrayList<String> contextComboBoxVals = new ArrayList<String>();
+        		ArrayList<String> totalContexts = new ArrayList<String>();
+        		for(int t = 0; t < processModels.size(); t++) {
+        			if(!processModels.get(t).contains(":")) {
+        				int a = 0;
+	        			totalContexts.add(addContexts.get(a).getText());
+	        			addContexts.get(a).clear();
+	        			a++;
+        			}else {
+        				int b = 0;
+            			System.out.println(getProcessModelVals.get(b).getValue());
+            			totalContexts.add(getProcessModelVals.get(b).getValue().toString());//TODO not working, cannot add selected value in table
+            			b++;
+        			}
         		}
-        		String[] contextComboBoxVals = new String[pmWithVals.size()];
-        		for(int i = 0; i < pmWithVals.size(); i++) {
-        			System.out.println(getProcessModelVals[i].getValue());
-        			contextComboBoxVals[i] = getProcessModelVals[i].getValue().toString(); //TODO not working, cannot add selected value in table
-        		}
+//        		for(int i = 0; i < pmWithVals.size(); i++) {
+//        		}
         		ComboBox<String> casesComboBox = new ComboBox<String> (casesCombo);
         		ComboBox<String> hazardousComboBox = new ComboBox(hazardousOX);
 				casesComboBox.setValue("Providing Causes Hazard");
 				hazardousComboBox.setValue("X");
         		ctData = totalData.get(tabNum).getCtTableList();
-        		ctData.add(new CT(controllerName, caName, casesComboBox, 1+temp, contexts, contextComboBoxVals, hazardousComboBox));
+        		ctData.add(new CT(controllerName, caName, casesComboBox, temp + 1, totalContexts, hazardousComboBox));
         		casesComboBox.valueProperty().addListener(new ChangeListener<String>() {
     			      @Override
       			      public void changed(ObservableValue observable, String oldValue, String newValue) {
@@ -283,7 +304,7 @@ public class CTController {
             @Override
             public void handle(ActionEvent e) {
 				try {
-					if(!pmvDB.getOutputList().isEmpty()) {
+					if(!pmvDB.getProcessModel().get(0).getSelectedOutputs().isEmpty()) {
 		            	// add & apply NuSCR file
 						outputTypeList.addAll(ctDataStore.getOutputTypeList());
 						//show popup to select output variable to extract MCSs
@@ -319,6 +340,13 @@ public class CTController {
 //		    		        				//if this is int, need to get MCS file of each int?
 //		    		        			}
 //		    		        		}
+		        					for(int i = 0; i < outputTypeList.size() - 1; i++) {
+		        						for(int j = i; j < outputTypeList.size(); j++) {
+		        							if(outputTypeList.get(i).equals(outputTypeList.get(j))) {
+		        								outputTypeList.remove(j);
+		        							}
+		        						}
+		        					}
 		    		        		System.out.println(outputTypeList);
 		        				}
 		        			}
@@ -371,12 +399,12 @@ public class CTController {
         	ctData = FXCollections.observableArrayList();
         	for(int i = 0; i < totalData.get(tabNum).getCtTableList().size(); i++) {
         		final int temp = i;
-        		String[] contextComboBoxs = new String[pmWithVals.size()];
+//        		ArrayList<String> contextComboBoxs = new ArrayList<String>();
 	    		ComboBox<String> casesComboBox = new ComboBox<String> (casesCombo);
 	    		ComboBox<String> hazardousComboBox = new ComboBox(hazardousOX);
 				casesComboBox.setValue(totalData.get(tabNum).getCtTableList().get(i).getCasesValue());
 				hazardousComboBox.setValue(totalData.get(tabNum).getCtTableList().get(i).getHazardousValue());
-        		ctData.add(new CT(controllerName, caName, casesComboBox, 1+temp, totalData.get(tabNum).getCtTableList().get(i).getContexts(), contextComboBoxs, hazardousComboBox));
+        		ctData.add(new CT(controllerName, caName, casesComboBox, 1+temp, totalData.get(tabNum).getCtTableList().get(i).getTotalContexts(), hazardousComboBox));
 	    		casesComboBox.valueProperty().addListener(new ChangeListener<String>() {
 				      @Override
 	  			      public void changed(ObservableValue observable, String oldValue, String newValue) {
@@ -435,13 +463,19 @@ public class CTController {
 	    
 		//TODO when adding into table, array index out of bounds exception occurs
 		//seems to occur when creating columns of context table
- 		for(final int[] x= {0,};x[0] < processModels.size(); x[0]++) {
- 			TableColumn<CT, String> contextColumn = new TableColumn<>(processModels.get(x[0]).substring(0, processModels.get(x[0]).lastIndexOf(":")).trim());
+ 		for(int x = 0; x < processModels.size(); x ++) {
+ 			TableColumn<CT, String> contextColumn = new TableColumn<>();
+ 			if(processModels.get(x).contains(":")) {
+ 				contextColumn = new TableColumn<>(processModels.get(x).substring(0, processModels.get(x).lastIndexOf(":")).trim());
+ 			}else {
+ 				contextColumn = new TableColumn<>(processModels.get(x));
+ 			}
+ 			
  			contextTable.getColumns().add(contextColumn);
 // 			contextColumn.setPrefWidth(80.0);
- 			contextColumn.setCellValueFactory(new PropertyValueFactory<CT, String>(processModels.get(x[0])));
- 			int temp = x[0];
- 			contextColumn.setCellValueFactory(cellData -> cellData.getValue().getContextProperty(temp));
+ 			contextColumn.setCellValueFactory(new PropertyValueFactory<CT, String>(processModels.get(x)));
+ 			int temp = x;
+ 			contextColumn.setCellValueFactory(cellData -> cellData.getValue().getTotalContextProperty(temp));
  			contextColumn.setCellFactory(TextFieldTableCell.forTableColumn());
  			contextColumn.setOnEditCommit(
  	            new EventHandler<CellEditEvent<CT, String>>() {
@@ -523,21 +557,25 @@ public class CTController {
 		return 0;
 	}
 	
-	public void addNuSCRFile() {
-		//get selected xml(NuSCR) file from pmvController class(to get same file without reopening it)
-		FileChooser fc = new FileChooser();
-		fc.setTitle("Add NuSCR File");
-		fc.setInitialDirectory(new File(Info.directory));
-		ExtensionFilter fileType = new ExtensionFilter("xml file", "*.xml");
-		
-		File selectedFile = fc.showOpenDialog(null);
-		if(selectedFile != null) {
-			if(selectedFile == pmvController.getSelectedFile()) {
-				
-			}
-		}
-	}
-	
+//	public void addNuSCRFile() {
+//		//get selected xml(NuSCR) file from pmvController class(to get same file without reopening it)
+//		FileChooser fc = new FileChooser();
+//		fc.setTitle("Add NuSCR File");
+//		fc.setInitialDirectory(new File(Info.directory));
+//		ExtensionFilter fileType = new ExtensionFilter("xml file", "*.xml");
+////		
+////		for(tabPane.getSelectionModel().getSelectedItem() != null) {
+////			
+////		}
+//		
+//		File selectedFile = fc.showOpenDialog(null);
+////		if(selectedFile != null) {
+////			if(selectedFile == pmvController.getSelectedFile(0)) {
+////				
+////			}
+////		}
+//	}
+//	
 	//put mcs values in process model variables
 	private void ParseMCS(String[] temps) {
 		String[][] context = new String[processModels.get(curTabNum).size()][temps.length];
@@ -607,19 +645,19 @@ public class CTController {
 
 		int curtableSize = totalData.get(curTabNum).getCtTableList().size();
 		for(int y=0;y<temps.length;y++) {
-	        String[] contexts = new String[processModels.get(curTabNum).size()];
+	        ArrayList<String> totalContexts = new ArrayList<String>();
 			for(int x=0;x<processModels.get(curTabNum).size();x++) {
-				contexts[x] = context[x][y];
+				totalContexts.add(x, context[x][y]);
 			}
 			
 			final int a=y;
-			String[] contextComboBoxs = new String[pmWithVals.size()];
+//			ArrayList<String> contextComboBoxs = new ArrayList<String>();
 	   		ComboBox<String> casesComboBox = new ComboBox(casesCombo);
 	   		ComboBox<String> hazardousComboBox = new ComboBox(hazardousOX);
 			casesComboBox.setValue("Providing Causes Hazard");
 			hazardousComboBox.setValue("X");
 			totalData.get(curTabNum).getCtTableList().add(
-					new CT(controllerNames.get(curTabNum), controlActionNames.get(curTabNum), casesComboBox, curtableSize+a+1, contexts, contextComboBoxs, hazardousComboBox)
+					new CT(controllerNames.get(curTabNum), controlActionNames.get(curTabNum), casesComboBox, curtableSize+a+1, totalContexts, hazardousComboBox)
 			);
 			ctData = totalData.get(curTabNum).getCtTableList();
     		casesComboBox.valueProperty().addListener(new ChangeListener<String>() {

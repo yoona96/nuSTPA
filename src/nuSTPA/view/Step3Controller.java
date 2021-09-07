@@ -234,11 +234,11 @@ public class Step3Controller {
 					break;
 				}
 				String Context = "";
-				for(ProcessModel pm : mainApp.pmmDB.getProcessModel()){
+				for(ProcessModel pm : mainApp.pmvDB.getProcessModel()){
 					if(pm.getControllerName().equals(c.getControllerName()) && pm.getControlActionName().equals(c.getControlAction())){
 						for(int j=0;j<pm.getProcessModelList().size();j++){
-							if(c.getContext(j)!="N/A" || !c.getContext(j).isEmpty()){
-								Context +=pm.getProcessModelList().get(j) +" =" +c.getContext(j)+", ";
+							if(c.getTotalContext(j)!="N/A" || !c.getTotalContext(j).isEmpty()){
+								Context +=pm.getProcessModelList().get(j) +" =" + c.getTotalContext(j)+", ";
 							}
 						}
 					}
@@ -356,11 +356,11 @@ public class Step3Controller {
 					break;
 				}
 				String Context = "";
-				for(ProcessModel pm : mainApp.pmmDB.getProcessModel()){
+				for(ProcessModel pm : mainApp.pmvDB.getProcessModel()){
 					if(pm.getControllerName().equals(c.getControllerName()) && pm.getControlActionName().equals(c.getControlAction())){
 						for(int j=0;j<pm.getProcessModelList().size();j++){
-							if(c.getContext(j)!="N/A" || !c.getContext(j).isEmpty()){
-								Context +=pm.getProcessModelList().get(j) +" =" +c.getContext(j)+", ";
+							if(c.getTotalContext(j)!="N/A" || !c.getTotalContext(j).isEmpty()){
+								Context +=pm.getProcessModelList().get(j) +" =" +c.getTotalContext(j)+", ";
 							}
 						}
 					}

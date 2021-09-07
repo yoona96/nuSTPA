@@ -20,24 +20,27 @@ public class CT {
 	private ComboBox<String> casesComboBox;
 	private IntegerProperty noProperty;
 	private ComboBox<String> hazardousComboBox;
-	private StringProperty[] contextsProperty;
+//	private ArrayList<StringProperty> contextsProperty;
+//	private ArrayList<StringProperty> contextsWithValsProperty;
+	private ArrayList<StringProperty> totalContextsProperty;
 
 	private String controllerName;
 	private String controlAction;
 	private String cases;
 	private int no;
 	private String hazardous;
-	private String[] contexts;
-	private String[] contextComboBoxVals;
+//	private ArrayList<String> contexts;
+//	private ArrayList<String> contextComboBoxVals;
+	private ArrayList<String> totalContexts;
 
-	public CT(String controllerName, String controlAction, ComboBox<String> cases, int no, String[] contexts, String[] contextComboBoxVals, ComboBox<String> hazardous) {
+	public CT(String controllerName, String controlAction, ComboBox<String> cases, int no, ArrayList<String> totalContexts, ComboBox<String> hazardous) {
 		this.controllerNameProperty = new SimpleStringProperty(controllerName);
 		this.controlActionProperty = new SimpleStringProperty(controlAction);
 		this.casesComboBox = cases;
 		this.noProperty = new SimpleIntegerProperty(no);
 		this.hazardousComboBox = hazardous;
-		this.contextsProperty = new StringProperty[contexts.length];
-		this.contextComboBoxVals = contextComboBoxVals;
+//		this.contextsProperty = new ArrayList<StringProperty>();
+//		this.contextComboBoxVals = contextComboBoxVals;
 		
 		cases.setOnAction(event -> {
 			this.cases = cases.getValue();
@@ -48,24 +51,25 @@ public class CT {
 		});
 
 
-		for(int i = 0; i < contexts.length; i++) {
-			this.contextsProperty[i] = new SimpleStringProperty(contexts[i]);
+		for(int i = 0; i < totalContexts.size(); i++) {
+			this.totalContextsProperty.add(new SimpleStringProperty(totalContexts.get(i))); //TODO: nullpointerException Occurs
 		}
 
 		this.controllerName = controllerName;
 		this.controlAction = controlAction;
 		this.cases = cases.getValue();
 		this.no = no;
-		this.contexts = contexts;
+		this.totalContexts = totalContexts;
+//		this.contexts = contexts;
 		this.hazardous = hazardous.getValue();
 	}
 	
 	public void setCTMInit(){
 		this.controlActionProperty = new SimpleStringProperty(this.controlAction);
 		this.noProperty = new SimpleIntegerProperty(this.no);
-		this.contextsProperty = new StringProperty[contexts.length];
-		for(int i=0;i<contexts.length;i++) {
-			this.contextsProperty[i] = new SimpleStringProperty(contexts[i]);
+		this.totalContextsProperty = new ArrayList<StringProperty>();
+		for(int i = 0; i < totalContexts.size(); i++) {
+			this.totalContextsProperty.add(i, new SimpleStringProperty(totalContexts.get(i)));
 		}
 	}
 	
@@ -80,22 +84,55 @@ public class CT {
 		this.controllerNameProperty.set(val);
 	}
 
-	public String[] getContexts() {
-		return contexts;
+//	public ArrayList<String> getContexts() {
+//		return contexts;
+//	}
+//	
+//	public String getContext(int i) {
+//		return contextsProperty.get(i).get();
+//	}
+//	
+//	public ArrayList<StringProperty> getContextsWithValsProperty() {
+//		return contextsWithValsProperty;
+//	}
+//
+//	public void setContextsWithValsProperty(ArrayList<StringProperty> contextsWithValsProperty) {
+//		this.contextsWithValsProperty = contextsWithValsProperty;
+//	}
+	
+	public ArrayList<StringProperty> getTotalContextsProperty() {
+		return totalContextsProperty;
 	}
 	
-	public String getContext(int i) {
-		return contextsProperty[i].get();
+	public StringProperty getTotalContextProperty(int i){
+		return totalContextsProperty.get(i);
+	}
+
+	public void setTotalContextsProperty(ArrayList<StringProperty> totalContextsProperty) {
+		this.totalContextsProperty = totalContextsProperty;
+	}
+
+	public String getTotalContext(int i) {
+		return totalContextsProperty.get(i).get();
 	}
 	
-	public StringProperty getContextProperty(int i) {
-		//System.out.println("property["+i+"]:"+test[i]);
-		return contextsProperty[i];
-	}
 	public void setContext(int i, String val) {
-		this.contextsProperty[i].set(val);
+		this.totalContextsProperty.add(i, new SimpleStringProperty(val));
 	}
 	
+//
+//	public void setContext(int i, String val) {
+//		this.contextsProperty.add(i, new SimpleStringProperty(val));
+//	}
+	
+	public ArrayList<String> getTotalContexts() {
+		return totalContexts;
+	}
+
+	public void setTotalContexts(ArrayList<String> totalContexts) {
+		this.totalContexts = totalContexts;
+	}
+
 	public String getControlAction() {
 		return controlActionProperty.get();
 	}
@@ -150,20 +187,17 @@ public class CT {
 		this.hazardousComboBox.setValue(val);
 		hazardous = hazardousComboBox.getValue();
 	}
-	public CT get(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public String[] getContextComboBoxVals() {
-		return contextComboBoxVals;
-	}
-	
-	public void setContextComboBoxVals(String[] contextComboBoxVals) {
-		this.contextComboBoxVals = contextComboBoxVals;
-	}
-	
-	public void setContextComboBoxVal(int i, String contextComboBoxVal) {
-		this.contextComboBoxVals[i] = contextComboBoxVal;
-	}
+//	public ArrayList<String> getContextComboBoxVals() {
+//		return contextComboBoxVals;
+//	}
+//	
+//	public void setContextComboBoxVals(ArrayList<String> contextComboBoxVals) {
+//		this.contextComboBoxVals = contextComboBoxVals;
+//	}
+//	
+//	public void setContextComboBoxVal(int i, String contextComboBoxVal) {
+//		this.contextComboBoxVals.add(i, contextComboBoxVal);
+//	}
+
 }

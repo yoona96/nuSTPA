@@ -91,7 +91,7 @@ public class Step2Controller {
 
 	private void initialize() {
 		dataStore = mainApp.components;
-		PmvDataStore pmvDB = mainApp.pmmDB;
+		PmvDataStore pmvDB = mainApp.pmvDB;
 		
 		// draw board from data store
 		controllers = dataStore.getControllers();
@@ -102,7 +102,14 @@ public class Step2Controller {
 			    DoubleProperty Y = new SimpleDoubleProperty(c.getY());
 			    c.clearNum();
 			    
-				RectangleView r = new RectangleView(X, Y, c.getName(), c.getId(), dataStore, pmvDB.getProcessModel().get(pmvDB.getProcessModel().indexOf(c.getName())).getProcessModelList());
+			    ObservableList<String> temp = FXCollections.observableArrayList();
+			    for(int i = 0; i < pmvDB.getProcessModel().size(); i++) {
+			    	if(pmvDB.getProcessModel().get(i).getControllerName().equals(c.getName())) {
+			    		temp = pmvDB.getProcessModel().get(i).getProcessModelList();
+			    	}
+			    }
+			    
+				RectangleView r = new RectangleView(X, Y, c.getName(), c.getId(), dataStore, temp);
 				c.setRectangle(r);
 	
 				addController(r, c);

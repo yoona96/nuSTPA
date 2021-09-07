@@ -9,6 +9,9 @@ public class ProcessModel {
 	//controller & control action related to this process model
 	private String controllerName, controlActionName;
 	
+	//total output variables related to selected controller
+	private ObservableList<String> totalOutputs = FXCollections.observableArrayList();
+	
 	//selected output variables
 	private ObservableList<String> selectedOutputs = FXCollections.observableArrayList();
 
@@ -21,9 +24,10 @@ public class ProcessModel {
 	public ProcessModel() {
 	}
 
-	public ProcessModel(String controller, String ca, ObservableList<String> selectedOutputs, ObservableList<String> processModelList) {
+	public ProcessModel(String controller, String ca, ObservableList<String> totalOutputs, ObservableList<String> selectedOutputs, ObservableList<String> processModelList) {
 		this.controllerName = controller;
 		this.controlActionName = ca;
+		this.totalOutputs = totalOutputs;
 		this.selectedOutputs = selectedOutputs;
 		this.processModelList = processModelList;
 	}
@@ -44,6 +48,14 @@ public class ProcessModel {
 		this.controlActionName = ca;
 	}
 	
+	public ObservableList<String> getTotalOutputs() {
+		return totalOutputs;
+	}
+
+	public void setTotalOutputs(ObservableList<String> totalOutputs) {
+		this.totalOutputs = totalOutputs;
+	}
+
 	public ObservableList<String> getSelectedOutputs(){
 		return this.selectedOutputs;
 	}

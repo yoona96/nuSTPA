@@ -75,7 +75,7 @@ public class Step4Controller {
 	public void addLossScenario() {
 		int tabIndex = tabPane.getSelectionModel().getSelectedIndex();
 		System.out.println("tabIndex: " + tabIndex);
-		lossScenarioTableList = lsDB.getLsList();
+		lossScenarioTableList = lsDB.getStep4List();
 		
 		ucaColList.get(tabIndex).setCellValueFactory(cellData -> cellData.getValue().getUCAProperty());
 		lossFactorColList.get(tabIndex).setCellValueFactory(cellData -> cellData.getValue().getLossFactorProperty());

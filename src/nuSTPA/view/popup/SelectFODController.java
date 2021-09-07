@@ -59,6 +59,7 @@ public class SelectFODController{
 	
 	//set group list in checkListView
 	public void setGroupItems(ArrayList<String> groupList) {
+		fodBtnGroup.getToggles().clear();
 		for(int i = 0; i < groupList.size(); i++) {
 			RadioButton newBtn = new RadioButton();
 			newBtn.setText(groupList.get(i));
@@ -71,5 +72,10 @@ public class SelectFODController{
 	public String selectedItem(){
 		RadioButton selectedFod = (RadioButton) fodBtnGroup.getSelectedToggle();
 		return selectedFod.getText();
+	}
+
+	public void clear() {
+		// TODO Auto-generated method stub
+		fodBtnGroup.getToggles().clear();
 	}
 }

@@ -9,19 +9,19 @@ import nuSTPA.model.step1.lossListAdapter;
 import nuSTPA.model.step3.Step3;
 
 public class Step4DataStore {
-	private ObservableList<Step4> lsList = FXCollections.observableArrayList();
+	private ObservableList<Step4> lossScenarioList = FXCollections.observableArrayList();
 	
-	@XmlElement(name = "LS-loss-scenario")
+	@XmlElement(name = "Step4 - Loss Scenario")
 	@XmlJavaTypeAdapter(Step4ListAdapter.class)
-	public ObservableList<Step4> getLsList(){
-		return this.lsList;
+	public ObservableList<Step4> getStep4List(){
+		return this.lossScenarioList;
 	}
 	
-	public void setLossScenarioList(ObservableList<Step4> lsList) {
-		this.lsList = lsList;
+	public void setStep4List(ObservableList<Step4> lsList) {
+		this.lossScenarioList = lsList;
 	}
 	
-	public void addLossScenario(Step4 ls) {
-		this.lsList.add(ls);
+	public void addStep4(Step4 ls) {
+		this.lossScenarioList.add(ls);
 	}
 }

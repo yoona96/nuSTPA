@@ -10,10 +10,10 @@ public class PmvDataStore {
 	private ObservableList<ProcessModel> pmvList = FXCollections.observableArrayList();
 	
 	//total input variables & related nodes related to each output variables
-	private ArrayList<ArrayList<String>> inputList = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> transitionList = new ArrayList<ArrayList<String>>();
 	
-	//total output variables
-	private ObservableList<String> outputList = FXCollections.observableArrayList();
+	//total output variables of selected FOD
+//	private ObservableList<String> outputList = FXCollections.observableArrayList();
 	
 	//selected FOD
 	private ArrayList<String> selectedFODs = new ArrayList<String>();
@@ -34,20 +34,20 @@ public class PmvDataStore {
 	}
 	
 	public ArrayList<ArrayList<String>> getInputList(){
-		return this.inputList;
+		return this.transitionList;
 	}
 	
-	public void setInputList(ArrayList<ArrayList<String>> inputList) {
-		this.inputList = inputList;
+	public void setInputList(ArrayList<ArrayList<String>> transitionList) {
+		this.transitionList = transitionList;
 	}
 
-	public ObservableList<String> getOutputList() {
-		return this.outputList;
-	}
-
-	public void setOutputList(ObservableList<String> outputlist2) {
-		this.outputList = outputlist2;
-	}
+//	public ObservableList<String> getOutputList() {
+//		return this.outputList;
+//	}
+//
+//	public void setOutputList(ObservableList<String> outputList) {
+//		this.outputList = outputList;
+//	}
 
 	public ArrayList<String> getSelectedFOD() {
 		return selectedFODs;

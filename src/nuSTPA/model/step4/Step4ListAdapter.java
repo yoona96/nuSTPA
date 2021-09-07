@@ -11,7 +11,7 @@ public class Step4ListAdapter extends XmlAdapter<ProjectXML, ObservableList<Step
 	@Override
 	public ObservableList<Step4> unmarshal(ProjectXML v) throws Exception {
 		// TODO Auto-generated method stub
-		ObservableList<Step4> lossScenarioList = FXCollections.observableArrayList(v.getLsList());
+		ObservableList<Step4> lossScenarioList = FXCollections.observableArrayList(v.getStep4List());
 		return lossScenarioList;
 	}
 
@@ -20,7 +20,7 @@ public class Step4ListAdapter extends XmlAdapter<ProjectXML, ObservableList<Step
 		// TODO Auto-generated method stub
 		ProjectXML lsXml = new ProjectXML();
 		v.stream().forEach((ls) -> {
-			lsXml.getLsList().add(ls);
+			lsXml.getStep4List().add(ls);
 		});
 		return lsXml;
 	}
