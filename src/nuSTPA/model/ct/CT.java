@@ -51,8 +51,10 @@ public class CT {
 		});
 
 
-		for(int i = 0; i < totalContexts.size(); i++) {
-			this.totalContextsProperty.add(new SimpleStringProperty(totalContexts.get(i))); //TODO: nullpointerException Occurs
+		if(totalContexts != null) {
+			for(int i = 0; i < totalContexts.size(); i++) {
+				this.totalContextsProperty.add(new SimpleStringProperty(totalContexts.get(i))); //TODO: nullpointerException Occurs
+			}
 		}
 
 		this.controllerName = controllerName;
