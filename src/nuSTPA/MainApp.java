@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import nuSTPA.model.ProjectXML;
 import nuSTPA.model.ct.CT;
@@ -53,7 +55,7 @@ public class MainApp extends Application {
 	public static ObservableList<CT> ctmDataStore = FXCollections.observableArrayList();
 	public static Step4DataStore lsDataStore;
 	public static PmvDataStore pmvDB;
-	 
+	public Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 	 
 	@Override
 	/**
@@ -81,7 +83,11 @@ public class MainApp extends Application {
 	/**
 	 * Init root layout
 	 */
-
+	
+	public double getMaxHeight() {
+		return primaryStage.getMaxHeight();
+	}
+	
 	private void initRootLayout() {
 		try {
             // get root layout
@@ -386,7 +392,7 @@ public class MainApp extends Application {
 			 // --------------------------- PMM --------------------------
 		        pmvDB.setProcessModel(projectXML.getProcessModel());
 		        pmvDB.setInputList(projectXML.getInputList());
-		        pmvDB.setOutputList(projectXML.getOutputList());
+//		        pmvDB.setOutputList(projectXML.getOutputList());
 			 // --------------------------- PMM --------------------------
 
 			 // --------------------------- CTM --------------------------
@@ -446,7 +452,7 @@ public class MainApp extends Application {
 
 		 // --------------------------- PMM --------------------------
 	        projectXML.setProcessModel(pmvDB.getProcessModel());
-	        projectXML.setOutputList(pmvDB.getOutputList());
+//	        projectXML.setOutputList(pmvDB.getOutputList());
 	        projectXML.setIntputList(pmvDB.getInputList());
     	 // --------------------------- PMM --------------------------
 

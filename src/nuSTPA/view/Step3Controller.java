@@ -13,6 +13,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.ContextMenuEvent;
@@ -168,9 +170,17 @@ public class Step3Controller {
 		String controlAction = controlActionComboBox.getValue();
 
 		if(controlAction == null){
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("No selected CA");
+			alert.setHeaderText("There is no selected Control Action");
+			alert.setContentText("You have to choose Control Action");
 			System.out.println("Please Select ControlAction");
 			return;
 		}else if(controller ==null){
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("No selected Controller");
+			alert.setHeaderText("There is no selected Controller");
+			alert.setContentText("You have to choose Controller");
 			System.out.println("Please Select Controller");
 			return;
 		}
@@ -237,8 +247,8 @@ public class Step3Controller {
 				for(ProcessModel pm : mainApp.pmvDB.getProcessModel()){
 					if(pm.getControllerName().equals(c.getControllerName()) && pm.getControlActionName().equals(c.getControlAction())){
 						for(int j=0;j<pm.getProcessModelList().size();j++){
-							if(c.getTotalContext(j)!="N/A" || !c.getTotalContext(j).isEmpty()){
-								Context +=pm.getProcessModelList().get(j) +" =" + c.getTotalContext(j)+", ";
+							if(c.getTotalContext(j).trim() != "N/A" || !c.getTotalContext(j).isEmpty()){
+								Context +=pm.getProcessModelList().get(j) +" =" + c.getTotalContext(j)+"&\n";
 							}
 						}
 					}

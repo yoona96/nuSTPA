@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -75,14 +76,10 @@ public class Step2Controller {
 	ModifyCAPopUpController ModifyCApop;
 	ModifyFBPopUpController ModifyFBpop;
 	
-	@FXML
-	Group root = new Group();
-	@FXML
-	ScrollPane board = new ScrollPane();
-//	@FXML
-//	ImageView component, ca, feedback, text;
-	@FXML
-	VBox componentBox, caBox, feedbackBox, textBox;
+	@FXML Group root = new Group();
+	@FXML ScrollPane board = new ScrollPane();
+	@FXML AnchorPane step2Pane = new AnchorPane();
+	@FXML VBox componentBox, caBox, feedbackBox, textBox;
 
 	// constructor
 	public Step2Controller() {
@@ -92,6 +89,9 @@ public class Step2Controller {
 	private void initialize() {
 		dataStore = mainApp.components;
 		PmvDataStore pmvDB = mainApp.pmvDB;
+		
+		board.maxWidthProperty().bind(step2Pane.widthProperty());
+		board.maxHeightProperty().bind(step2Pane.heightProperty());
 		
 		// draw board from data store
 		controllers = dataStore.getControllers();

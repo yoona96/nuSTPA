@@ -97,11 +97,6 @@ public class CTController {
 	public CTController() { }
 	
 	private void initialize(){
-//        tabPane.setPrefWidth(1000.0);
-	}
-
-	//set MainApp
-	public void setMainApp(MainApp mainApp)  {
 		addFile.setVisible(false);
 
 		hazardousOX = FXCollections.observableArrayList();
@@ -126,9 +121,6 @@ public class CTController {
 			controlActionNames.add(p.getControlActionName());
 			processModelList.add(p.getProcessModelList());
 			
-//			System.out.println("controllerName:"+controllerNames.get(index));
-//			System.out.println("controlActionNames:"+controlActionNames.get(index));
-//			System.out.println("processModelList:"+processModelList.get(index));
 			index++;
 		}
 		
@@ -136,9 +128,6 @@ public class CTController {
 		processModels = new ArrayList<>(controllerCount);
 		for(int x=0;x<controllerCount;x++) {
 			ObservableList<String> temp = FXCollections.observableArrayList();
-			/*for(int y=0;y<outputNames.get(x).size();y++) {
-				temp.add(outputNames.get(x).get(y));
-			}*/
 			for(int y=0;y<processModelList.get(x).size();y++) {
 				temp.add(processModelList.get(x).get(y));
 			}
@@ -150,10 +139,17 @@ public class CTController {
 			tabPane.getTabs().add(makeTab(i,controllerNames.get(i),controlActionNames.get(i), processModels.get(i)));
 		}
 		
-//        tabPane.setPrefWidth(1000.0);
-//        tabPane.setPrefHeight(800.0);
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         ctPane.getChildren().addAll(tabPane);
+        
+		tabPane.maxHeightProperty().bind(ctPane.heightProperty());
+		tabPane.maxWidthProperty().bind(ctPane.widthProperty());
+	}
+
+	//set MainApp
+	public void setMainApp(MainApp mainApp)  {
+		this.mainApp = mainApp;
+        this.initialize();
 	}
 	
 	public Tab makeTab(int tabNum, String controllerName, String caName, ObservableList<String> processModels) {
@@ -235,19 +231,25 @@ public class CTController {
 //                ArrayList<String> contexts = new ArrayList<String>();
 //        		ArrayList<String> contextComboBoxVals = new ArrayList<String>();
         		ArrayList<String> totalContexts = new ArrayList<String>();
+				int a = 0, b = 0;
         		for(int t = 0; t < processModels.size(); t++) {
-        			if(!processModels.get(t).contains(":")) {
-        				int a = 0;
-	        			totalContexts.add(addContexts.get(a).getText());
-	        			addContexts.get(a).clear();
-	        			a++;
+        			if(processModels.get(t).contains(":")) {
+        				if(getProcessModelVals.get(b).getValue().equals(processModels.get(t).substring(0, processModels.get(t).lastIndexOf(":")).trim())) {
+        					System.out.println(getProcessModelVals.get(b).getValue());
+                			totalContexts.add(getProcessModelVals.get(b).getValue());//TODO not working, cannot add selected value in table	
+                			System.out.println("current total contexts for process model with value : " + getProcessModelVals.get(b).getValue());
+                			b++;
+        				}
         			}else {
-        				int b = 0;
-            			System.out.println(getProcessModelVals.get(b).getValue());
-            			totalContexts.add(getProcessModelVals.get(b).getValue().toString());//TODO not working, cannot add selected value in table
-            			b++;
+        				if(addContexts.get(a).getText() != null) {
+    	        			totalContexts.add(addContexts.get(a).getText());
+    	        			addContexts.get(a).clear();
+    	        			System.out.println("current total contexts for process model : " + addContexts.get(a).getText());
+    	        			a++;
+        				}
         			}
         		}
+        		System.out.println("total contexts : " + totalContexts);
 //        		for(int i = 0; i < pmWithVals.size(); i++) {
 //        		}
         		ComboBox<String> casesComboBox = new ComboBox<String> (casesCombo);
@@ -433,6 +435,7 @@ public class CTController {
 		TableView<CT> contextTable = new TableView<CT>();
 		
 		contextTable.prefWidthProperty().bind(tabPane.widthProperty());
+		contextTable.prefHeightProperty().bind(tabPane.heightProperty());
 //		contextTable.prefWidth(1000.0);
 		contextTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -447,6 +450,7 @@ public class CTController {
 		hazardousColumn.setPrefWidth(100.0);
 		
 		contextTable.prefWidthProperty().bind(ctPane.widthProperty());
+		contextTable.prefHeightProperty().bind(ctPane.heightProperty());
 		contextTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         // 4. Set table row 
 		CAColumn.setCellValueFactory(new PropertyValueFactory<CT, String>("controlAction"));
@@ -475,6 +479,7 @@ public class CTController {
 // 			contextColumn.setPrefWidth(80.0);
  			contextColumn.setCellValueFactory(new PropertyValueFactory<CT, String>(processModels.get(x)));
  			int temp = x;
+// 			if(ctDataStore.getC)
  			contextColumn.setCellValueFactory(cellData -> cellData.getValue().getTotalContextProperty(temp));
  			contextColumn.setCellFactory(TextFieldTableCell.forTableColumn());
  			contextColumn.setOnEditCommit(
@@ -540,15 +545,15 @@ public class CTController {
 	            FileInputStream fis = new FileInputStream(selectedMCSFile);
 	            
 	            byte [] buffer = new byte[fis.available()];
-	            String temp="";
+	            String mcsData="";
 	            while((fis.read(buffer)) != -1) {
-	            	temp = new String(buffer);
+	            	mcsData = new String(buffer);
 	            }    
 	            fis.close();
 	           
-	            String[] temps = new String[1000];
-	            temps = temp.split("\n");
-	            this.ParseMCS(temps);
+	            String[] splitMcsData = new String[1000];
+	            splitMcsData = mcsData.split("\n");
+	            this.ParseMCS(splitMcsData);
 	            
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
@@ -577,77 +582,119 @@ public class CTController {
 //	}
 //	
 	//put mcs values in process model variables
-	private void ParseMCS(String[] temps) {
-		String[][] context = new String[processModels.get(curTabNum).size()][temps.length];
-
+	private void ParseMCS(String[] splitMcsData) {
+		String[][] context = new String[processModels.get(curTabNum).size()][splitMcsData.length];
+		StringBuilder abstractedPM = new StringBuilder();
+		ArrayList<String> abstractedPMs = new ArrayList<String>();
+		
 		int i=0;
-		while(i < temps.length) {
-			String[] splits = temps[i].split("&");
-			int j=0;
-			int temp=-1;
-
+		while(i < splitMcsData.length) {
+			String[] splits = splitMcsData[i].split("&");
+			int j = 0;
+			int currentPM = -1;
+			
 			while(j < splits.length) {
-				int index= splits[j].indexOf("=");
-				if(index>=0) {
+				int equalIndex = splits[j].lastIndexOf("=");
+				
+				//have to check if splits[] contains abstracted old PM				
+				for(int k = 0; k < pmvDB.getAbstractedList().size(); k++) {
+					for(int l = 1; l < pmvDB.getAbstractedList().get(k).size(); l++) {
+						if(splits[j].contains(pmvDB.getAbstractedList().get(k).get(l))) {
+							if(splits[j].contains("=")) {
+								if(splits[j].contains("!=")) {
+									if(splits[j].substring(equalIndex + 1).trim().equals("false")) {
+										abstractedPM.append("TRUE");
+										abstractedPM.append("&");
+									}else if(splits[j].substring(equalIndex + 1).trim().equals("true")) {
+										abstractedPM.append("FALSE");
+										abstractedPM.append("&");
+									}
+								}else {
+									if(splits[j].substring(equalIndex + 1).trim().equals("true")) {
+										abstractedPM.append("TRUE");
+										abstractedPM.append("&");
+									}else if(splits[j].substring(equalIndex + 1).trim().equals("false")) {
+										abstractedPM.append("FALSE");
+										abstractedPM.append("&");
+									}
+								}
+							}else if(splits[j].contains("<=")) {
+								abstractedPM.append(splits[j].replace("(A)", "").replace(pmvDB.getAbstractedList().get(k).get(l), "x").trim());
+								abstractedPM.append("&");
+							}else if(!splits[j].contains("true") && !splits[j].contains("false")) {
+								abstractedPM.append(splits[j].substring(equalIndex + 1).trim());
+								abstractedPM.append("&");
+							}
+						}
+					}
+					abstractedPMs.add(k, abstractedPM.toString());
+				}
+				System.out.println(abstractedPMs);
+				
+				//only get values 
+				if(equalIndex >= 0) {
 					for(int t=0;t<processModels.get(curTabNum).size();t++) {
 						if(splits[j].contains(processModels.get(curTabNum).get(t))) {
-							if(context[t][i]==null) {
-								context[t][i] = splits[j].substring(index+1);
+							if(context[t][i] == null) {
+								context[t][i] = splits[j].substring(equalIndex); //equalIndex = last index of '=' in splits[j], context[t][i] = substring of splits starting from '='
 								if(context[t][i].substring(0,1).contains("=")) {
-									context[t][i] = context[t][i].replace("= ", "");
+									context[t][i].replace("=", "").trim();
 								}
-								if(splits[j].substring(0,index).contains("!")) {
-									if(splits[j].contains("false")) context[t][i] = "true";
-									else if(splits[j].contains("true")) context[t][i] = "false";
+								if(splits[j].contains("!")) {
+									if(splits[j].contains("false")) context[t][i] = "TRUE";
+									else if(splits[j].contains("true")) context[t][i] = "FALSE";
 								}
 								if(splits[j].contains("<=")){
 									context[t][i] = splits[j].replace(processModels.get(curTabNum).get(t), "x");
-									context[t][i] = context[t][i].replace("(A)", "");
+									context[t][i].replace("(A)", "");
 								}
 							} else if(!splits[j].contains("true") && !splits[j].contains("false")) {
-								context[t][i] += (" & \n" + splits[j].substring(index+1));
+								context[t][i] += (" & " + splits[j].substring(equalIndex+1));
 							}
-							temp = t;
+							currentPM = t;
 							break;
 						}
 					}
-				} else if(index < 0 && temp >= 0) {
-					if(context[temp][i]==null || context[temp][i].contains("true") || context[temp][i].contains("false")) {
+				} else if(equalIndex < 0 && currentPM >= 0) { //when currentPM = t && equal index does not exist
+					if(context[currentPM][i]==null || context[currentPM][i].contains("true") || context[currentPM][i].contains("false")) {
 						if(splits[j].length()!=1) {
-							context[temp][i]=splits[j];
+							context[currentPM][i]=splits[j];
 						}
-					}else if(!context[temp][i].isEmpty() && !context[temp][i].contains("<=")){
-						context[temp][i] += (" & \n" +splits[j]);
+					}else if(!context[currentPM][i].isEmpty() && !context[currentPM][i].contains("<=")){
+						context[currentPM][i] += (" &\n" +splits[j]);
 					}
-					temp = -1;
+					currentPM = -1;
 				}		
 				j++;
 			}
 			i++;
 		}
 		
-		ObservableList<String> pmWithVals = FXCollections.observableArrayList();
-        for(int j = 0; j < processModels.get(curTabNum).size(); j++) {
-            if(processModels.get(curTabNum).get(j).contains(":=")) {
-            	pmWithVals.add(processModels.get(curTabNum).get(j));
-            }else {
-            	pmWithVals.add("N/A");
-            }
-        }
-		
-		for(int x = 0; x < processModels.get(curTabNum).size() - pmWithVals.size(); x++) {
-			for(int y=0;y<temps.length;y++) {
+		for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
+			for(int y=0;y<splitMcsData.length;y++) {
 				if(context[x][y]==null) {
 					context[x][y] = "N/A";
 				}
 			}
 		}
-
+		
 		int curtableSize = totalData.get(curTabNum).getCtTableList().size();
-		for(int y=0;y<temps.length;y++) {
+		for(int y=0;y < splitMcsData.length;y++) {
 	        ArrayList<String> totalContexts = new ArrayList<String>();
-			for(int x=0;x<processModels.get(curTabNum).size();x++) {
-				totalContexts.add(x, context[x][y]);
+			if(!abstractedPMs.isEmpty()) {
+				for(int a = 0; a < pmvDB.getAbstractedList().size(); a++) {
+					if(splitMcsData[y].equals(pmvDB.getAbstractedList().get(a).get(0))) {
+						totalContexts.add(y, abstractedPMs.get(a));
+					}else {
+						for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
+							totalContexts.add(x, context[x][y]);
+						}
+					}
+				}
+			}else {
+				for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
+					totalContexts.add(x, context[x][y]);
+				}
 			}
 			
 			final int a=y;

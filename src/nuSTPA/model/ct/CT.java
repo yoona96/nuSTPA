@@ -51,10 +51,18 @@ public class CT {
 		});
 
 
+//		if(totalContexts != null) {
+//			for(int i = 0; i < totalContexts.size(); i++) {
+//				System.out.println(i + " : " + totalContexts.get(i));
+//				this.totalContextsProperty.get(i).set(totalContexts.get(i)); //TODO: nullpointerException Occurs
+//			}
+//		}
 		if(totalContexts != null) {
+			ArrayList<StringProperty> temp = new ArrayList<StringProperty>();
 			for(int i = 0; i < totalContexts.size(); i++) {
-				this.totalContextsProperty.add(new SimpleStringProperty(totalContexts.get(i))); //TODO: nullpointerException Occurs
+				temp.add(new SimpleStringProperty(totalContexts.get(i)));
 			}
+			this.totalContextsProperty = temp;
 		}
 
 		this.controllerName = controllerName;
@@ -66,7 +74,7 @@ public class CT {
 		this.hazardous = hazardous.getValue();
 	}
 	
-	public void setCTMInit(){
+	public void setCTInit(){
 		this.controlActionProperty = new SimpleStringProperty(this.controlAction);
 		this.noProperty = new SimpleIntegerProperty(this.no);
 		this.totalContextsProperty = new ArrayList<StringProperty>();
@@ -107,7 +115,12 @@ public class CT {
 	}
 	
 	public StringProperty getTotalContextProperty(int i){
-		return totalContextsProperty.get(i);
+		StringProperty temp = new SimpleStringProperty("");
+		if(totalContextsProperty.get(i) != null) {
+			return totalContextsProperty.get(i);
+		}else {
+			return temp;
+		}
 	}
 
 	public void setTotalContextsProperty(ArrayList<StringProperty> totalContextsProperty) {

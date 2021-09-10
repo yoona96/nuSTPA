@@ -26,6 +26,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -76,18 +78,17 @@ public class PmvController {
 
 	private MenuItem modifyMenu, deleteMenu, abstractionMenu;
 
-	@FXML
-	private Label fileName;
-	@FXML
-	private Pane addFile;
-	@FXML
-	private ChoiceBox<String> controllerList, caList;
-	@FXML
-	private ListView<String> outputList;
-	@FXML
-	private TabPane tabPane;
-	@FXML
-	private Button addTabButton, toCTButton, addPmvButton, extractPmvButton;
+	@FXML private Label fileName;
+	@FXML private Pane addFile;
+	@FXML private ChoiceBox<String> controllerList, caList;
+	@FXML private ListView<String> outputList;
+	@FXML private TabPane tabPane;
+	@FXML private Button addTabButton, toCTButton, addPmvButton, extractPmvButton;
+	
+	@FXML private HBox title;
+	@FXML private AnchorPane pmvPane;
+	@FXML private HBox pmvHBox;
+	@FXML private VBox tabVBox, listViewVBox;
 
 	//to control each listview for each controller
 	ObservableList<ListView<String>> listViewList = FXCollections.observableArrayList();
@@ -347,6 +348,8 @@ public class PmvController {
 			        processModelList.add(s);
 		        }
 	        }
+	        lv.getItems().addAll(selectedOutputList);
+	        processModelList.addAll(selectedOutputList); //also need to add selected output vars in process model
 	        PM.setProcessModelList(processModelList);
 			System.out.println("process model list being added : " + processModelList);
 			components.setProcessModel(processModelList, controllerList.getValue());
@@ -525,11 +528,8 @@ public class PmvController {
 	
 	//execute abstraction
 	private void abstractProcessModel(ProcessModel p, ListView<String> processModelList, ObservableList<Integer> targetIndices) {
-//		StringBuilder commonString1 = new StringBuilder(); //String before diffString
-//		StringBuilder commonString2 = new StringBuilder(); //String after diffString
-//		StringBuilder diffString = new StringBuilder();
+		ArrayList<String> abstractedPMs = new ArrayList<String>();
 		
-		//그냥...사람이..손으로 수정하게 해도 된다.....
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("popup/VariablePopUpView.fxml"));
@@ -549,9 +549,16 @@ public class PmvController {
 				public void handle(WindowEvent e) {
 					VariablePopUpController popup = loader.getController();
 					if (popup.value != null) {
+						abstractedPMs.add(popup.value); //first item of abstractedPMs is new value
 						//modify data in listView
 						try{
 							int currentTabIndex = listViewList.indexOf(processModelList);
+							//other items of abstractedPMs is old values
+							for(int i = 0; i < targetIndices.size(); i++) {
+								abstractedPMs.add(listViewList.get(currentTabIndex).getItems().get(targetIndices.get(i)));
+							}
+							System.out.println(abstractedPMs);
+							
 							listViewList.get(currentTabIndex).getItems().set(targetIndices.get(0), popup.value);
 							//modify data in db
 							p.getProcessModelList().set(targetIndices.get(0), popup.value);
@@ -567,6 +574,7 @@ public class PmvController {
 					}
 				}
 			});
+			pmvDB.getAbstractedList().add(abstractedPMs);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -613,6 +621,58 @@ public class PmvController {
 		}
 	}
 	
+	//applying NuSCR File, used on CTController
+	public void applyNuSCRFile2() throws ParserConfigurationException, SAXException, IOException, NullPointerException {
+		//save output types in CT DB
+//		selectedNuSCRFile = pmvController.getSelectedFile();
+		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFiles.get(selectedFiles.size() - 1));
+		ArrayList<String> tempList = new ArrayList<String>();
+		ArrayList<String> tempOutputList = new ArrayList<String>();
+		ListView<String> lv = new ListView<String>();
+		
+		for(Tab tab : tabPane.getTabs()){
+        	if(tab.getText().equals(controllerList.getValue() + '-' + caList.getValue())){
+        		lv = listViewList.get(tabPane.getTabs().indexOf(tab));
+            }
+        }
+		
+		//compare total variables with selected output variables and add to tempOutputList
+		for(String s : outputList.getSelectionModel().getSelectedItems()) {
+			for(int i = 0; i < variableTypeList.size(); i++) {
+				if(variableTypeList.get(i).contains(s.trim()) && !tempOutputList.contains(variableTypeList.get(i))) {
+					tempOutputList.add(variableTypeList.get(i));
+				}
+			}
+		}
+		
+		System.out.println("these are variables in process model list view : " + lv.getItems());
+		
+//		ObservableList<String> processModelTypeList = FXCollections.observableArrayList();
+		//compare process model with total variables and add to tempList
+		for(String s : lv.getItems()) {
+			for(int i = 0; i < variableTypeList.size(); i++) {
+				if(variableTypeList.get(i).contains(s.trim()) && !tempList.contains(variableTypeList.get(i))) {
+			        //add to listview & db only when there are no duplication
+					tempList.add(variableTypeList.get(i));
+				}
+			}
+		}
+		
+		//if there exists duplication between tempList & tempOutputList, remove to solve redundancy
+		for(String s : tempOutputList) {
+			if(tempList.contains(s)) {
+				tempList.remove(tempList.indexOf(s));
+			}
+		}
+		
+		CTDataStore.getOutputTypeList().addAll(tempOutputList);
+		CTDataStore.getPmTypeList().addAll(tempList);
+		System.out.println("these are types of selected output variables : " + tempOutputList);
+		System.out.println("these are types of process model : " + tempList);
+		
+//		return tempList;
+	}
+
 	private void initialize() {
 //		System.out.println("\n**********************");
 //		System.out.println("initialize!! ");
@@ -714,58 +774,6 @@ public class PmvController {
 		});
 	}
 
-	//applying NuSCR File, used on CTController
-	public void applyNuSCRFile2() throws ParserConfigurationException, SAXException, IOException, NullPointerException {
-		//save output types in CT DB
-//		selectedNuSCRFile = pmvController.getSelectedFile();
-		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFiles.get(selectedFiles.size() - 1));
-		ArrayList<String> tempList = new ArrayList<String>();
-		ArrayList<String> tempOutputList = new ArrayList<String>();
-		ListView<String> lv = new ListView<String>();
-		
-		for(Tab tab : tabPane.getTabs()){
-        	if(tab.getText().equals(controllerList.getValue() + '-' + caList.getValue())){
-        		lv = listViewList.get(tabPane.getTabs().indexOf(tab));
-            }
-        }
-		
-		//compare total variables with selected output variables and add to tempOutputList
-		for(String s : outputList.getSelectionModel().getSelectedItems()) {
-			for(int i = 0; i < variableTypeList.size(); i++) {
-				if(variableTypeList.get(i).contains(s.trim()) && !tempOutputList.contains(variableTypeList.get(i))) {
-					tempOutputList.add(variableTypeList.get(i));
-				}
-			}
-		}
-		
-		System.out.println("these are variables in process model list view : " + lv.getItems());
-		
-//		ObservableList<String> processModelTypeList = FXCollections.observableArrayList();
-		//compare process model with total variables and add to tempList
-		for(String s : lv.getItems()) {
-			for(int i = 0; i < variableTypeList.size(); i++) {
-				if(variableTypeList.get(i).contains(s.trim()) && !tempList.contains(variableTypeList.get(i))) {
-			        //add to listview & db only when there are no duplication
-					tempList.add(variableTypeList.get(i));
-				}
-			}
-		}
-		
-		//if there exists duplication between tempList & tempOutputList, remove to solve redundancy
-		for(String s : tempOutputList) {
-			if(tempList.contains(s)) {
-				tempList.remove(tempList.indexOf(s));
-			}
-		}
-		
-		CTDataStore.getOutputTypeList().addAll(tempOutputList);
-		CTDataStore.getPmTypeList().addAll(tempList);
-		System.out.println("these are types of selected output variables : " + tempOutputList);
-		System.out.println("these are types of process model : " + tempList);
-		
-//		return tempList;
-	}
-	
 	// set MainApp
 		public void setMainApp(MainApp mainApp) {
 			this.mainApp = mainApp;

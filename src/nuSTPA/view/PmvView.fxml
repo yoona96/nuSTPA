@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -15,73 +14,77 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nuSTPA.view.PmvController">
+<AnchorPane fx:id="pmvPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="770.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nuSTPA.view.PmvController">
    <children>
-      <Label layoutX="431.0" layoutY="8.0" text="Process Model" textAlignment="CENTER" AnchorPane.topAnchor="8.0">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Group layoutX="44.0" layoutY="-237.0" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="62.0">
+      <HBox fx:id="title" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="1000.0">
          <children>
-            <HBox layoutX="-32.0" layoutY="-7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="981.0">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Process Model" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox fx:id="pmvHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="980.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <VBox fx:id="tabVBox" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="620.0" spacing="5.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="620.0" spacing="5.0">
+                  <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="88.0" prefWidth="600.0">
                      <children>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="88.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="toCTButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="161.0" text="Edit Context Table" textAlignment="CENTER" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="addTabButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="105.0" text="new tab" textAlignment="CENTER" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="663.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" />
-                     </children>
-                  </VBox>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="350.0" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Controller" />
-                        <ChoiceBox fx:id="controllerList" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="311.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Control Action">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin></Text>
-                        <ChoiceBox fx:id="caList" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="319.0" />
-                        <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="38.0" prefWidth="331.0" spacing="20.0">
-                           <children>
-                              <Button contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showOutput" prefHeight="30.0" prefWidth="123.0" text="open NuSCR file" textAlignment="CENTER" />
-                              <Button fx:id="addPmvButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#addPMValue" prefHeight="30.0" prefWidth="140.0" text="Add Process Model" />
-                           </children>
-                        </HBox>
-                        <ListView fx:id="outputList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="329.0">
-                           <VBox.margin>
+                        <Button fx:id="toCTButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="161.0" text="Edit Context Table" textAlignment="CENTER" wrapText="true">
+                           <HBox.margin>
                               <Insets right="10.0" />
-                           </VBox.margin>
-                        </ListView>
-                        <Button fx:id="extractPmvButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#addToProcessModel" prefHeight="30.0" prefWidth="159.0" text="Extract Process model">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="addTabButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="105.0" text="new tab" textAlignment="CENTER" wrapText="true">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
                         </Button>
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="663.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" />
                </children>
-            </HBox>
+            </VBox>
+            <VBox fx:id="listViewVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="350.0" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Controller" />
+                  <ChoiceBox fx:id="controllerList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="311.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Control Action">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <ChoiceBox fx:id="caList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="319.0" />
+                  <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="331.0" spacing="20.0">
+                     <children>
+                        <Button contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showOutput" prefHeight="30.0" prefWidth="123.0" text="open NuSCR file" textAlignment="CENTER" />
+                        <Button fx:id="addPmvButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#addPMValue" prefHeight="30.0" prefWidth="140.0" text="Add Process Model" />
+                     </children>
+                  </HBox>
+                  <ListView fx:id="outputList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="329.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <Button fx:id="extractPmvButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addToProcessModel" prefHeight="30.0" prefWidth="159.0" text="Extract Process model">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </Group>
+      </HBox>
       <Pane fx:id="addFile" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="210.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="300.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="-14.0" stroke="WHITE" strokeType="INSIDE" style="-fx-stroke: black;" width="210.0" />
@@ -92,7 +95,7 @@
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" layoutX="8.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="159.0" />
                   <Button layoutX="174.0" layoutY="16.0" mnemonicParsing="false" onAction="#addNuSCRFile" prefHeight="24.0" prefWidth="28.0" text="..." />
                   <Button layoutX="57.0" layoutY="55.0" mnemonicParsing="false" onAction="#applyNuSCRFile1" text="열기" />
-                  <Button layoutX="114.0" layoutY="55.0" mnemonicParsing="false" onMouseClicked="#close" text="취소" />
+                  <Button layoutX="114.0" layoutY="55.0" mnemonicParsing="false" onAction="#close" text="취소" />
                   <Label fx:id="fileName" layoutX="14.0" layoutY="20.0" />
                </children>
             </AnchorPane>

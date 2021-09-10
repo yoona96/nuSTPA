@@ -15,6 +15,8 @@ public class PmvDataStore {
 	//total output variables of selected FOD
 //	private ObservableList<String> outputList = FXCollections.observableArrayList();
 	
+	private ArrayList<ArrayList<String>> abstractedList = new ArrayList<ArrayList<String>>();
+	
 	//selected FOD
 	private ArrayList<String> selectedFODs = new ArrayList<String>();
 	
@@ -63,5 +65,13 @@ public class PmvDataStore {
 
 	public void setSelectedOutputs(ObservableList<String> selectedOutputList) {
 		this.selectedOutputs = selectedOutputList;
+	}
+
+	public ArrayList<ArrayList<String>> getAbstractedList() {
+		return abstractedList;
+	}
+
+	public void setAbstractedList(ArrayList<ArrayList<String>> abstractedList) {
+		this.abstractedList = abstractedList;
 	}
 }
