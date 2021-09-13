@@ -28,7 +28,7 @@ public class XmlReader {
 	
 	public static ArrayList<String> fodNodeNameList = new ArrayList<String>(); //list for name of FODs
 	public static ObservableList<String> connectedVarSet = FXCollections.observableArrayList(); //list of variables connected to selected output variable
-	static ArrayList<String> connectedVarSetwState = new ArrayList<String>(); //list of variables connected to selected output variable with state
+	public static ArrayList<String> connectedVarSetwState = new ArrayList<String>(); //list of variables connected to selected output variable with state
 	static ObservableList<String> outputVars = FXCollections.observableArrayList(); //list of output variables in selected FOD
 
 	static ArrayList<String> typeList = new ArrayList<String>(); // list of name & type of selected output variables
@@ -218,7 +218,7 @@ public class XmlReader {
 		for(int c = 0; c < connectedVarSet.size(); c++) {
 			for(int d = 0; d < fsmTtsList.size(); d++) {
 				if(fsmTtsList.get(d).equals(connectedVarSet.get(c))) {
-					connectedVarSetwState.set(c, fsmTtsList.get(d) + "(_state)");
+					connectedVarSetwState.add(fsmTtsList.get(d) + "_state");
 				}else
 					continue;
 			}
@@ -288,5 +288,6 @@ public class XmlReader {
 		}else
 			return checkTarget(target2);
 	}
+
 }
 

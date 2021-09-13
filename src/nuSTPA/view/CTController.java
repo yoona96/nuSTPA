@@ -349,7 +349,7 @@ public class CTController {
 		        							}
 		        						}
 		        					}
-		    		        		System.out.println(outputTypeList);
+		    		        		System.out.println("this is outputTypeList : " + outputTypeList);
 		        				}
 		        			}
 		        		});
@@ -596,40 +596,36 @@ public class CTController {
 			while(j < splits.length) {
 				int equalIndex = splits[j].lastIndexOf("=");
 				
-				//have to check if splits[] contains abstracted old PM				
-				for(int k = 0; k < pmvDB.getAbstractedList().size(); k++) {
-					for(int l = 1; l < pmvDB.getAbstractedList().get(k).size(); l++) {
-						if(splits[j].contains(pmvDB.getAbstractedList().get(k).get(l))) {
-							if(splits[j].contains("=")) {
+				if(pmvDB.getAbstractedList() != null) {
+					for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
+						for(int k = 1; k < abstractedPMList.size(); k++) {
+							if(splits[j].contains(abstractedPMList.get(k))) {
 								if(splits[j].contains("!=")) {
-									if(splits[j].substring(equalIndex + 1).trim().equals("false")) {
-										abstractedPM.append("TRUE");
-										abstractedPM.append("&");
-									}else if(splits[j].substring(equalIndex + 1).trim().equals("true")) {
-										abstractedPM.append("FALSE");
-										abstractedPM.append("&");
+									if(splits[j].substring(equalIndex).trim().equals("false")) {
+										abstractedPM.append("TRUE&");
+									}else {
+										abstractedPM.append("FALSE&");
 									}
+								}else if(splits[j].contains("==")) {
+									abstractedPM.append(splits[j].substring(1).trim() + "&");
+								}else if(splits[j].substring(0,1).contains("=")) {
+									if(splits[j].substring(equalIndex).trim().equals("false")) {
+										abstractedPM.append("FALSE&");
+									}else {
+										abstractedPM.append("TRUE&");
+									}
+								}else if(splits[j].contains("<=")) {
+									splits[j].replace(abstractedPMList.get(k), "x").replace("(A)", "");
+									abstractedPM.append(splits[j] + "&");
 								}else {
-									if(splits[j].substring(equalIndex + 1).trim().equals("true")) {
-										abstractedPM.append("TRUE");
-										abstractedPM.append("&");
-									}else if(splits[j].substring(equalIndex + 1).trim().equals("false")) {
-										abstractedPM.append("FALSE");
-										abstractedPM.append("&");
-									}
+									abstractedPM.append(splits[j].substring(equalIndex+1));
 								}
-							}else if(splits[j].contains("<=")) {
-								abstractedPM.append(splits[j].replace("(A)", "").replace(pmvDB.getAbstractedList().get(k).get(l), "x").trim());
-								abstractedPM.append("&");
-							}else if(!splits[j].contains("true") && !splits[j].contains("false")) {
-								abstractedPM.append(splits[j].substring(equalIndex + 1).trim());
-								abstractedPM.append("&");
 							}
 						}
+						abstractedPMs.addAll(abstractedPMList);
 					}
-					abstractedPMs.add(k, abstractedPM.toString());
 				}
-				System.out.println(abstractedPMs);
+				
 				
 				//only get values 
 				if(equalIndex >= 0) {
@@ -637,16 +633,16 @@ public class CTController {
 						if(splits[j].contains(processModels.get(curTabNum).get(t))) {
 							if(context[t][i] == null) {
 								context[t][i] = splits[j].substring(equalIndex); //equalIndex = last index of '=' in splits[j], context[t][i] = substring of splits starting from '='
-								if(context[t][i].substring(0,1).contains("=")) {
-									context[t][i].replace("=", "").trim();
-								}
-								if(splits[j].contains("!")) {
+								if(splits[j].contains("!=")) {
 									if(splits[j].contains("false")) context[t][i] = "TRUE";
 									else if(splits[j].contains("true")) context[t][i] = "FALSE";
-								}
-								if(splits[j].contains("<=")){
-									context[t][i] = splits[j].replace(processModels.get(curTabNum).get(t), "x");
-									context[t][i].replace("(A)", "");
+								}else if(context[t][i].substring(0,1).contains("=") && context[t][i].contains("true") || context[t][i].contains("false")) {
+									if(context[t][i].contains("true")) context[t][i] = "TRUE";
+									else context[t][i] = "FALSE";
+								}else if(context[t][i].substring(0,2).contains("==")) {
+									context[t][i].replace("==", "").trim();
+								}else if(splits[j].contains("<=")){
+									context[t][i] = splits[j].replace(processModels.get(curTabNum).get(t), "x").replace("(A)", "");
 								}
 							} else if(!splits[j].contains("true") && !splits[j].contains("false")) {
 								context[t][i] += (" & " + splits[j].substring(equalIndex+1));

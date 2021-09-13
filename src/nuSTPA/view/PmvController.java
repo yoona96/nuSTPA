@@ -326,21 +326,25 @@ public class PmvController {
 //        System.out.println("this is connected variables : " + xmlReader.connectedVarSet);
 	    
 	    if(!selectedOutputList.isEmpty()) {
+	    	ListView<String> lv = new ListView<String>();
+	        ObservableList<String> processModelList = FXCollections.observableArrayList();
+	        
 	    	for(String s: selectedOutputList) {
 				xmlReader.getTransitionNodes(s);
 			}
-	    	ListView<String> lv = new ListView<String>();
 	        valueListControl(lv);
 	        for(Tab tab : tabPane.getTabs()){
 	        	if(tab.getText().equals(controllerList.getValue() + '-' + caList.getValue())){
 	        		lv = listViewList.get(tabPane.getTabs().indexOf(tab));
 	            }
 	        }
-	        for(int i = 0; i < xmlReader.connectedVarSet.size(); i++) {
-	        	tempList.add(xmlReader.connectedVarSet.get(i));
+	        for(int i = 0; i < xmlReader.connectedVarSetwState.size(); i++) {
+	        	tempList.add(xmlReader.connectedVarSetwState.get(i));
 	        }
 
-	        ObservableList<String> processModelList = FXCollections.observableArrayList();
+	        lv.getItems().addAll(selectedOutputList);
+	        processModelList.addAll(selectedOutputList); //also need to add selected output vars in process model
+	        
 	        //add to listview & db only when there are no duplication
 	        for(String s : tempList) {
 	        	if(!lv.getItems().contains(s)) {
@@ -348,12 +352,10 @@ public class PmvController {
 			        processModelList.add(s);
 		        }
 	        }
-	        lv.getItems().addAll(selectedOutputList);
-	        processModelList.addAll(selectedOutputList); //also need to add selected output vars in process model
+	        
 	        PM.setProcessModelList(processModelList);
 			System.out.println("process model list being added : " + processModelList);
 			components.setProcessModel(processModelList, controllerList.getValue());
-			System.out.println("which one is null? " + controllerList.getValue());
 	        //add selected outputs in db
 	        PM.setSelectedOutputs(selectedOutputList);
 	        pmvDB.setSelectedOutputs(selectedOutputList);

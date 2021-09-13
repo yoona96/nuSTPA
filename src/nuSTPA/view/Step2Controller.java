@@ -103,9 +103,13 @@ public class Step2Controller {
 			    c.clearNum();
 			    
 			    ObservableList<String> temp = FXCollections.observableArrayList();
+			    //if there are several control actions connected to one controller, a controller needs to have all the process models related to control actions
 			    for(int i = 0; i < pmvDB.getProcessModel().size(); i++) {
 			    	if(pmvDB.getProcessModel().get(i).getControllerName().equals(c.getName())) {
-			    		temp = pmvDB.getProcessModel().get(i).getProcessModelList();
+			    		for(int j = 0; j < pmvDB.getProcessModel().get(i).getProcessModelList().size(); j++) {
+			    			if(!temp.contains(pmvDB.getProcessModel().get(i).getProcessModelList().get(j)))
+			    				temp.add(pmvDB.getProcessModel().get(i).getProcessModelList().get(j));
+			    		}
 			    	}
 			    }
 			    

@@ -12,9 +12,7 @@ public class PmvDataStore {
 	//total input variables & related nodes related to each output variables
 	private ArrayList<ArrayList<String>> transitionList = new ArrayList<ArrayList<String>>();
 	
-	//total output variables of selected FOD
-//	private ObservableList<String> outputList = FXCollections.observableArrayList();
-	
+	//list of abstracted process models
 	private ArrayList<ArrayList<String>> abstractedList = new ArrayList<ArrayList<String>>();
 	
 	//selected FOD
@@ -22,6 +20,9 @@ public class PmvDataStore {
 	
 	//selected output vars
 	private ObservableList<String> selectedOutputs = FXCollections.observableArrayList();
+	
+	//FSM or TTS node from process model
+	private ArrayList<String> fsmTtsList = new ArrayList<String>();
 	
 	public ObservableList<ProcessModel> getProcessModel(){
 		return pmvList;
@@ -42,14 +43,6 @@ public class PmvDataStore {
 	public void setInputList(ArrayList<ArrayList<String>> transitionList) {
 		this.transitionList = transitionList;
 	}
-
-//	public ObservableList<String> getOutputList() {
-//		return this.outputList;
-//	}
-//
-//	public void setOutputList(ObservableList<String> outputList) {
-//		this.outputList = outputList;
-//	}
 
 	public ArrayList<String> getSelectedFOD() {
 		return selectedFODs;
@@ -73,5 +66,13 @@ public class PmvDataStore {
 
 	public void setAbstractedList(ArrayList<ArrayList<String>> abstractedList) {
 		this.abstractedList = abstractedList;
+	}
+
+	public ArrayList<String> getFsmTtsList() {
+		return fsmTtsList;
+	}
+
+	public void setFsmTtsList(ArrayList<String> fsmTtsList) {
+		this.fsmTtsList = fsmTtsList;
 	}
 }
