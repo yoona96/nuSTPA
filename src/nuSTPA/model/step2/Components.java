@@ -32,12 +32,12 @@ public class Components {
 	public Components() {
 		ObservableList<String> temp = FXCollections.observableArrayList();
 		//===================temp========================
-		controllers.add(new Controller(300, 50, "Operator", 1, temp));
-		controllers.add(new Controller(50, 200, "Core Protection Calculator", 2, temp));
-		controllers.add(new Controller(400, 300, "RPS", 3, temp));
-		controllers.add(new Controller(50, 500, "ENFMS", 4, temp));
-		controllers.add(new Controller(400, 500, "CEDMCS", 5, temp));
-		controllers.add(new Controller(300, 700, "Reactor", 6, temp));
+		controllers.add(new Controller(500, 5, "Operator", 1, temp));
+		controllers.add(new Controller(300, 400, "Core Protection Calculator", 2, temp));
+		controllers.add(new Controller(800, 300, "RPS", 3, temp));
+		controllers.add(new Controller(50, 750, "ENFMS", 4, temp));
+		controllers.add(new Controller(400, 750, "CEDMCS", 5, temp));
+		controllers.add(new Controller(600, 1000, "Reactor", 6, temp));
 		for(int i = 0; i < controllers.size(); i++) {
 			System.out.println(controllers.get(i).getName());
 		}

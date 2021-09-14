@@ -523,11 +523,12 @@ public class CTController {
 	
 	@FXML
 	public void addMCSFile() {
+		filename.setText("");
         FileChooser fc = new FileChooser();
         fc.setTitle("Add File");
         fc.setInitialDirectory(new File(Info.directory));
-        ExtensionFilter txtType = new ExtensionFilter("text file", "*.txt", "*.doc");
-        fc.getExtensionFilters().addAll(txtType);
+        ExtensionFilter fileType = new ExtensionFilter("text file", "*.txt");
+        fc.getExtensionFilters().addAll(fileType);
          
 	    selectedMCSFile =  fc.showOpenDialog(null);
         if(selectedMCSFile != null) {
@@ -596,35 +597,38 @@ public class CTController {
 			while(j < splits.length) {
 				int equalIndex = splits[j].lastIndexOf("=");
 				
-				if(pmvDB.getAbstractedList() != null) {
-					for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
-						for(int k = 1; k < abstractedPMList.size(); k++) {
-							if(splits[j].contains(abstractedPMList.get(k))) {
-								if(splits[j].contains("!=")) {
-									if(splits[j].substring(equalIndex).trim().equals("false")) {
-										abstractedPM.append("TRUE&");
-									}else {
-										abstractedPM.append("FALSE&");
-									}
-								}else if(splits[j].contains("==")) {
-									abstractedPM.append(splits[j].substring(1).trim() + "&");
-								}else if(splits[j].substring(0,1).contains("=")) {
-									if(splits[j].substring(equalIndex).trim().equals("false")) {
-										abstractedPM.append("FALSE&");
-									}else {
-										abstractedPM.append("TRUE&");
-									}
-								}else if(splits[j].contains("<=")) {
-									splits[j].replace(abstractedPMList.get(k), "x").replace("(A)", "");
-									abstractedPM.append(splits[j] + "&");
-								}else {
-									abstractedPM.append(splits[j].substring(equalIndex+1));
-								}
-							}
-						}
-						abstractedPMs.addAll(abstractedPMList);
-					}
-				}
+//				if(pmvDB.getAbstractedList() != null) {
+//					for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
+//						for(int k = 1; k < abstractedPMList.size(); k++) {
+//							if(splits[j].contains(abstractedPMList.get(k))) {
+//								System.out.println(abstractedPMList.get(k));
+//								if(splits[j].contains("!=")) {
+//									if(splits[j].substring(equalIndex).trim().equals("false")) {
+//										abstractedPM.append("TRUE&");
+//									}else {
+//										abstractedPM.append("FALSE&");
+//									}
+//								}else if(splits[j].contains("==")) {
+//									abstractedPM.append(splits[j].substring(1).trim() + "&");
+//								}else if(splits[j].substring(0,1).contains("=")) {
+//									if(splits[j].substring(equalIndex).trim().equals("false")) {
+//										abstractedPM.append("FALSE&");
+//									}else {
+//										abstractedPM.append("TRUE&");
+//									}
+//								}else if(splits[j].contains("<=")) {
+//									splits[j].replace(abstractedPMList.get(k), "x").replace("(A)", "");
+//									abstractedPM.append(splits[j] + "&");
+//								}else {
+//									abstractedPM.append(splits[j].substring(equalIndex+1));
+//								}
+//							}
+//						}
+//						abstractedPMList.add(abstractedPM.toString());
+//						abstractedPMs.addAll(abstractedPMList);
+////						System.out.println(abstractedPMList);
+//					}
+//				}
 				
 				
 				//only get values 
@@ -643,9 +647,21 @@ public class CTController {
 									context[t][i].replace("==", "").trim();
 								}else if(splits[j].contains("<=")){
 									context[t][i] = splits[j].replace(processModels.get(curTabNum).get(t), "x").replace("(A)", "");
+								}else if(context[t][i].contains("=")) {
+									context[t][i].replace("=", "").trim();
 								}
+							} else if(splits[j].contains("_state")) {
+								context[t][i].replace("==", "").replace("=", "").trim();
 							} else if(!splits[j].contains("true") && !splits[j].contains("false")) {
 								context[t][i] += (" & " + splits[j].substring(equalIndex+1));
+							} else if(pmvDB.getAbstractedList() != null) {
+								for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
+									for(int k = 1; k < abstractedPMList.size(); k++) {
+										if(splits[j].contains(abstractedPMList.get(k))) {
+											
+										}
+									}
+								}
 							}
 							currentPM = t;
 							break;

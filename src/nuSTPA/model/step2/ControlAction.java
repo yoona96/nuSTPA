@@ -67,5 +67,4 @@ public class ControlAction {
 	public void setCA(ArrayList<String> CA) {
 		this.CA = CA;
 	}
-	
 }

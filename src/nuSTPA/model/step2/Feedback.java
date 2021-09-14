@@ -68,5 +68,4 @@ public class Feedback {
 	public void setFB(ArrayList<String> FB) {
 		this.FB = FB;
 	}
-
 }

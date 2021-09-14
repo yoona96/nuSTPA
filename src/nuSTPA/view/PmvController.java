@@ -72,7 +72,7 @@ public class PmvController {
 	private XmlReader xmlReader;
 	private MainApp mainApp;
 //	private File selectedFile;
-	private ArrayList<File> selectedFiles = new ArrayList<File>();
+	private File selectedFile;
 	private Components components;
 	private PmvDataStore pmvDB;
 
@@ -98,10 +98,6 @@ public class PmvController {
 
 	public PmvController() {
 
-	}
-	
-	public File getSelectedFile(int i) {
-		return selectedFiles.get(i);
 	}
 
 	// Get Controller, all of CA from CSE DataStore
@@ -148,7 +144,7 @@ public class PmvController {
 			if(pmvDB.getProcessModel().get(i).getControllerName().equals(controller) && pmvDB.getProcessModel().get(i).getControlActionName().equals(controlAction)) {
 				if(tempList != null) {
 					outputList.getItems().addAll(tempList);
-					System.out.println("this is outputList of selected controller & ca : " + tempList);
+//					System.out.println("this is outputList of selected controller & ca : " + tempList);
 				}
 			}
 		}
@@ -175,19 +171,15 @@ public class PmvController {
 	@FXML
 	public void showOutput() {
 //		System.out.println("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡSHOW outputㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-		addFile.setVisible(true);
+		if(tabPane.getSelectionModel().getSelectedItem() != null) {
+			addFile.setVisible(true);
+			fileName.setText("");
+		}
 	}
 	
 	//show selected file on screen
 	@FXML
 	public void addNuSCRFile() {
-//		if(tabPane.getSelectionModel().getSelectedItem() == null) {
-//			Alert alert = new Alert(AlertType.WARNING);
-//			alert.setTitle("Warning");
-//			alert.setHeaderText("No selected tab");
-//			alert.setContentText("You have to make tab with new tab button");
-//			alert.showAndWait();
-//		}else {
 		//file chooser
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Get output variables");
@@ -197,24 +189,20 @@ public class PmvController {
 		ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
 		fc.getExtensionFilters().add(extFilter);
 
-		selectedFiles.add(fc.showOpenDialog(null));
-		if (selectedFiles != null) {
-//			dataStore.setFilePath(selectedFile);
-			fileName.setText(selectedFiles.get(selectedFiles.size()-1).getName());
+		selectedFile = fc.showOpenDialog(null);
+		if (selectedFile != null) {
+//					dataStore.setFilePath(selectedFile);
+			fileName.setText(selectedFile.getName());
 
 			try {
-				FileInputStream fis = new FileInputStream(selectedFiles.get(selectedFiles.size()-1));
+				FileInputStream fis = new FileInputStream(selectedFile);
 				BufferedInputStream bis = new BufferedInputStream(fis);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-		}else {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information");
-			alert.setHeaderText("No file selected");
-			alert.setContentText("You did not choose file to import");
 		}
-//		}
+//		System.out.println(selectedFile);
+		//file chooser
 	}
 
 	@FXML
@@ -228,11 +216,12 @@ public class PmvController {
 	@FXML
 	public void applyNuSCRFile1() throws ParserConfigurationException, SAXException, IOException {
 		// clear all items
-		addFile.getChildren().clear();
+		addFile.setVisible(false);
+//		addFile.getChildren().clear();
 	    outputList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		// Create XmlReader constructor
-		ArrayList<String> showGroupNodesItems = xmlReader.parseXml(selectedFiles.get(selectedFiles.size()-1));
+		ArrayList<String> showGroupNodesItems = xmlReader.parseXml(selectedFile);
 		
 		//no root FOD(don't fit NuSCR format)
 		if(xmlReader.getRootFod().equals("")) {
@@ -297,11 +286,11 @@ public class PmvController {
 					for(int k = 0; k < pmvDB.getProcessModel().size(); k++) {
 						if(pmvDB.getProcessModel().get(k).getControllerName().equals(controllerList.getValue())) {
 							pmvDB.getProcessModel().get(k).setTotalOutputs(totalOutputList); // store every output list in DB
-							System.out.println("adding total outputs into DB : " + pmvDB.getProcessModel().get(k).getTotalOutputs());
+//							System.out.println("adding total outputs into DB : " + pmvDB.getProcessModel().get(k).getTotalOutputs());
 						}
 					}
 					outputList.setItems(totalOutputList);
-					System.out.println("this is total output list : " + totalOutputList);
+//					System.out.println("this is total output list : " + totalOutputList);
 				}
 			}
 		});
@@ -354,7 +343,7 @@ public class PmvController {
 	        }
 	        
 	        PM.setProcessModelList(processModelList);
-			System.out.println("process model list being added : " + processModelList);
+//			System.out.println("process model list being added : " + processModelList);
 			components.setProcessModel(processModelList, controllerList.getValue());
 	        //add selected outputs in db
 	        PM.setSelectedOutputs(selectedOutputList);
@@ -428,7 +417,7 @@ public class PmvController {
 //								System.out.println("add to db");
 								if(pm.getControlActionName().equals(caList.getValue()) && pm.getControllerName().equals(controllerList.getValue())){
 									pm.getProcessModelList().add(popup.value);
-									System.out.println("process model list being added : " + listViewList.get(tabIndex).getItems());
+//									System.out.println("process model list being added : " + listViewList.get(tabIndex).getItems());
 //									for (Controller c : components.getControllers()) {
 //										DoubleProperty X = new SimpleDoubleProperty(c.getX());
 //									    DoubleProperty Y = new SimpleDoubleProperty(c.getY());
@@ -559,7 +548,7 @@ public class PmvController {
 							for(int i = 0; i < targetIndices.size(); i++) {
 								abstractedPMs.add(listViewList.get(currentTabIndex).getItems().get(targetIndices.get(i)));
 							}
-							System.out.println(abstractedPMs);
+							System.out.println("AbstractedPMs : " + abstractedPMs);
 							
 							listViewList.get(currentTabIndex).getItems().set(targetIndices.get(0), popup.value);
 							//modify data in db
@@ -627,7 +616,7 @@ public class PmvController {
 	public void applyNuSCRFile2() throws ParserConfigurationException, SAXException, IOException, NullPointerException {
 		//save output types in CT DB
 //		selectedNuSCRFile = pmvController.getSelectedFile();
-		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFiles.get(selectedFiles.size() - 1));
+		ArrayList<String> variableTypeList = xmlReader.parseNuSCR(selectedFile);
 		ArrayList<String> tempList = new ArrayList<String>();
 		ArrayList<String> tempOutputList = new ArrayList<String>();
 		ListView<String> lv = new ListView<String>();
@@ -647,7 +636,7 @@ public class PmvController {
 			}
 		}
 		
-		System.out.println("these are variables in process model list view : " + lv.getItems());
+//		System.out.println("these are variables in process model list view : " + lv.getItems());
 		
 //		ObservableList<String> processModelTypeList = FXCollections.observableArrayList();
 		//compare process model with total variables and add to tempList
@@ -669,8 +658,8 @@ public class PmvController {
 		
 		CTDataStore.getOutputTypeList().addAll(tempOutputList);
 		CTDataStore.getPmTypeList().addAll(tempList);
-		System.out.println("these are types of selected output variables : " + tempOutputList);
-		System.out.println("these are types of process model : " + tempList);
+//		System.out.println("these are types of selected output variables : " + tempOutputList);
+//		System.out.println("these are types of process model : " + tempList);
 		
 //		return tempList;
 	}

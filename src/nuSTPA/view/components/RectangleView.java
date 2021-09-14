@@ -48,7 +48,7 @@ public class RectangleView extends StackPane {
 		this.id = integer;
 		
 //		width = new SimpleDoubleProperty(150);
-		this.rect = new Rectangle(100, 150);
+		this.rect = new Rectangle(200, 200);
 		this.rect.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
 		
 		this.x = x;
