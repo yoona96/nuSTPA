@@ -548,7 +548,7 @@ public class PmvController {
 							for(int i = 0; i < targetIndices.size(); i++) {
 								abstractedPMs.add(listViewList.get(currentTabIndex).getItems().get(targetIndices.get(i)));
 							}
-							System.out.println("AbstractedPMs : " + abstractedPMs);
+//							System.out.println("AbstractedPMs : " + abstractedPMs);
 							
 							listViewList.get(currentTabIndex).getItems().set(targetIndices.get(0), popup.value);
 							//modify data in db

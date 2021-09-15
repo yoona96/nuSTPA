@@ -298,7 +298,7 @@ public class Step2Controller {
 
 							addController(r, c);
 							dataStore.addController(c);
-							System.out.println(dataStore.getControllers().get(dataStore.getControllers().size() - 1).getName());
+//							System.out.println(dataStore.getControllers().get(dataStore.getControllers().size() - 1).getName());
 						}
 						break;
 					case "ca":
@@ -307,7 +307,7 @@ public class Step2Controller {
 						if(AddCApop.OKclose) {
 							ControlAction ca = new ControlAction(AddCApop.controller, AddCApop.controlledProcess, AddCApop.CA, dataStore.curId, dataStore);
 							
-							System.out.println(AddCApop.controller);
+//							System.out.println(AddCApop.controller);
 							Controller controller = dataStore.findController(AddCApop.controller);
 							Controller controlled = dataStore.findController(AddCApop.controlledProcess);
 							

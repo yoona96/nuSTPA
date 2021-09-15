@@ -1,8 +1,10 @@
 package nuSTPA.view;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -541,24 +543,36 @@ public class CTController {
 		
 		if(selectedMCSFile != null) {
 			addFile.setVisible(false);
-	
-	        try {
-	            FileInputStream fis = new FileInputStream(selectedMCSFile);
-	            
-	            byte [] buffer = new byte[fis.available()];
-	            String mcsData="";
-	            while((fis.read(buffer)) != -1) {
-	            	mcsData = new String(buffer);
-	            }    
-	            fis.close();
-	           
-	            String[] splitMcsData = new String[1000];
-	            splitMcsData = mcsData.split("\n");
-	            this.ParseMCS(splitMcsData);
-	            
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        }
+
+			BufferedReader br = new BufferedReader(new FileReader(selectedMCSFile));
+			
+			String m = null;
+			ArrayList<String> eachRow = new ArrayList<String>();
+			int num = 1;
+			while((m = br.readLine()) != null) {
+				eachRow.add(m);
+//				if(selectedMCSFile.toString().contains("true")) {
+//					eachRow.add("TRUE");
+//				}else if(selectedMCSFile.toString().contains("false")){
+//					eachRow.add("FALSE");
+//				}
+			}
+//	        try {
+//	            FileInputStream fis = new FileInputStream(selectedMCSFile);
+//	            
+//	            byte [] buffer = new byte[fis.available()];
+//	            String mcsData="";
+//	            while((fis.read(buffer)) != -1) {
+//	            	mcsData = new String(buffer);
+//	            }    
+//	            fis.close();
+//	            String[] splitMcsData = new String[1000];
+//	            splitMcsData = mcsData.split("\n");
+	            this.ParseMCS(eachRow);
+//	            
+//	        } catch (FileNotFoundException e) {
+//	            e.printStackTrace();
+//	        }
 		}
 		return 0;
 	}
@@ -583,131 +597,177 @@ public class CTController {
 //	}
 //	
 	//put mcs values in process model variables
-	private void ParseMCS(String[] splitMcsData) {
-		String[][] context = new String[processModels.get(curTabNum).size()][splitMcsData.length];
+	private void ParseMCS(ArrayList<String> eachRow) {
+		ArrayList<ArrayList<String>> totalContext = new ArrayList<ArrayList<String>>(); // eachRow * splitByAnd
+		String[][] context = new String[processModels.get(curTabNum).size()][eachRow.size()];
 		StringBuilder abstractedPM = new StringBuilder();
 		ArrayList<String> abstractedPMs = new ArrayList<String>();
+		boolean repeat1 = true, repeat2 = true, repeat3 = true, repeat4 = true;
 		
-		int i=0;
-		while(i < splitMcsData.length) {
-			String[] splits = splitMcsData[i].split("&");
-			int j = 0;
-			int currentPM = -1;
-			
-			while(j < splits.length) {
-				int equalIndex = splits[j].lastIndexOf("=");
-				
-//				if(pmvDB.getAbstractedList() != null) {
-//					for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
-//						for(int k = 1; k < abstractedPMList.size(); k++) {
-//							if(splits[j].contains(abstractedPMList.get(k))) {
-//								System.out.println(abstractedPMList.get(k));
-//								if(splits[j].contains("!=")) {
-//									if(splits[j].substring(equalIndex).trim().equals("false")) {
-//										abstractedPM.append("TRUE&");
-//									}else {
-//										abstractedPM.append("FALSE&");
-//									}
-//								}else if(splits[j].contains("==")) {
-//									abstractedPM.append(splits[j].substring(1).trim() + "&");
-//								}else if(splits[j].substring(0,1).contains("=")) {
-//									if(splits[j].substring(equalIndex).trim().equals("false")) {
-//										abstractedPM.append("FALSE&");
-//									}else {
-//										abstractedPM.append("TRUE&");
-//									}
-//								}else if(splits[j].contains("<=")) {
-//									splits[j].replace(abstractedPMList.get(k), "x").replace("(A)", "");
-//									abstractedPM.append(splits[j] + "&");
-//								}else {
-//									abstractedPM.append(splits[j].substring(equalIndex+1));
-//								}
-//							}
-//						}
-//						abstractedPMList.add(abstractedPM.toString());
-//						abstractedPMs.addAll(abstractedPMList);
-////						System.out.println(abstractedPMList);
-//					}
-//				}
-				
-				
-				//only get values 
-				if(equalIndex >= 0) {
-					for(int t=0;t<processModels.get(curTabNum).size();t++) {
-						if(splits[j].contains(processModels.get(curTabNum).get(t))) {
-							if(context[t][i] == null) {
-								context[t][i] = splits[j].substring(equalIndex); //equalIndex = last index of '=' in splits[j], context[t][i] = substring of splits starting from '='
-								if(splits[j].contains("!=")) {
-									if(splits[j].contains("false")) context[t][i] = "TRUE";
-									else if(splits[j].contains("true")) context[t][i] = "FALSE";
-								}else if(context[t][i].substring(0,1).contains("=") && context[t][i].contains("true") || context[t][i].contains("false")) {
-									if(context[t][i].contains("true")) context[t][i] = "TRUE";
-									else context[t][i] = "FALSE";
-								}else if(context[t][i].substring(0,2).contains("==")) {
-									context[t][i].replace("==", "").trim();
-								}else if(splits[j].contains("<=")){
-									context[t][i] = splits[j].replace(processModels.get(curTabNum).get(t), "x").replace("(A)", "");
-								}else if(context[t][i].contains("=")) {
-									context[t][i].replace("=", "").trim();
-								}
-							} else if(splits[j].contains("_state")) {
-								context[t][i].replace("==", "").replace("=", "").trim();
-							} else if(!splits[j].contains("true") && !splits[j].contains("false")) {
-								context[t][i] += (" & " + splits[j].substring(equalIndex+1));
-							} else if(pmvDB.getAbstractedList() != null) {
-								for(ArrayList<String> abstractedPMList : pmvDB.getAbstractedList()) {
-									for(int k = 1; k < abstractedPMList.size(); k++) {
-										if(splits[j].contains(abstractedPMList.get(k))) {
-											
-										}
+		for(int i = 0; i < eachRow.size(); i++) {
+			ArrayList<String> tempList= new ArrayList<String>();
+			for(int j = 0; j < processModels.get(curTabNum).size(); j++) {
+				tempList.add("N/A");
+			}
+			totalContext.add(tempList);
+		}
+		
+		String state = "";
+		
+		int i = 0;
+		while(i < eachRow.size()) {
+			//i is row number
+			String[] splitByAnd = eachRow.get(i).split("[&]");
+			String[] splitByIneq = {}, splitByEq = {}, splitByRange = {}, splitByEqEq = {};
+			for(int j = 0; j < splitByAnd.length; j++) {
+				splitByAnd[j] = splitByAnd[j].replaceAll("[(][A-Z][)]", "").replaceAll("[0-9]{1,3}[.]\\s", "").replaceAll(" = ", "=").replaceAll(" == ", "==").trim();
+				//for every splitted variables&values
+				if(splitByAnd[j].matches(".+[!][=].?(true|false)")) {
+					//if form of data is var != val, take only val
+					 splitByIneq = splitByAnd[j].split("[!][=]");
+				}else if(splitByAnd[j].matches(".+[=](true|false)")) {
+					//if form of data is var = val, take only val
+					splitByEq = splitByAnd[j].split("[=]");
+				}else if(splitByAnd[j].matches("[0-9]+[<=].+[<=][0-9]+")) {
+					//if form of data is val<=var<=val&change var into x
+					splitByRange = splitByAnd[j].split("[<][=]");
+				}else if(splitByAnd[j].matches("(Trip|Waiting|Normal).+")) {
+					//form of data is Trip/Waiting/Normal at/for x
+					if(!eachRow.contains(splitByAnd[j])) {
+						state = splitByAnd[j];
+					}
+					if(state != "" && !state.contains(splitByAnd[j])) {
+						state += " & " + splitByAnd[j];
+					}
+				}else if(splitByAnd[j].matches(".+[=]{2,2}.+")) {
+					//form of data is x_state==Waiting
+					splitByEqEq = splitByAnd[j].split("[=]{2,2}");
+				}
+				for(String s : pmvDB.getProcessModel().get(curTabNum).getProcessModelList()) {
+					if(splitByIneq.length > 0) {
+						if(splitByIneq[0].equals(s)) {
+							//form of data x!=true
+							if(splitByIneq[1].equals("true")) {
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "FALSE");
+							}
+							else
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "TRUE");
+						}else if(splitByIneq[0].equals(s + "_t0")) {
+							//form of data x_t0=false
+							String tmp = totalContext.get(i).get(processModels.get(curTabNum).indexOf(s)+1);
+							if(tmp != "N/A" && !tmp.contains("t0")) {
+								if(splitByIneq[1].equals("true"))
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), tmp + "&t0=" + "FALSE");
+								else
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), tmp + "&t0=" + "TRUE");
+							}else {
+								if(splitByIneq[1].equals("true"))
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "t0=" + "FALSE");
+								else
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "t0=" + "TRUE");
+							}
+							
+						}
+					}
+					if(splitByEq.length > 0) {
+						if(splitByEq[0].equals(s)) {
+							//form of data x=true
+							if(splitByEq[1].equals("true"))
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "TRUE");
+							else
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), "FALSE");
+						}else if(splitByEq[0].equals(s + "_t0")) {
+							//form of data x_t0=false
+							String tmp = totalContext.get(i).get(processModels.get(curTabNum).indexOf(s)+1);
+							if(!tmp.contains(splitByEq[1]) && tmp != "N/A" && !tmp.contains("t0")) {
+								if(splitByEq[1].equals("true"))
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s) + 1, tmp + "\n&t0 = TRUE");
+								else
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s) + 1, tmp + "\n&t0 = FALSE");
+							}else {
+								if(splitByEq[1].equals("true"))
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s) + 1, "t0 = TRUE");
+								else
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s) + 1, "t0 = FALSE");
+							}
+						}
+					}
+					if(splitByRange.length > 0) {
+						if(splitByRange[1].equals(s)) {
+							if(eachRow.get(processModels.get(curTabNum).indexOf(s)).equals("N/A")) {
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), splitByRange[0] + "<=x<=" + splitByRange[2]);
+							}else if(repeat1 == true || repeat3 == true){
+								String temp = totalContext.get(i).get(processModels.get(curTabNum).indexOf(s));
+								if(!temp.contains(splitByRange[0] + "<=x<=" + splitByRange[2]) && temp != "N/A") {
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), temp + "\n&" + splitByRange[0] + "<=x<=" + splitByRange[2]);
+									if(repeat1 == false && repeat3 == true) {
+										repeat3 = false;
 									}
+									repeat1 = false;
+								}else {
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), splitByRange[0] + "<=x<=" + splitByRange[2]);
+									if(repeat1 == false && repeat3 == true) {
+										repeat3 = false;
+									}
+									repeat1 = false;
 								}
 							}
-							currentPM = t;
-							break;
+							//TODO need to fix here
+						}else if(splitByRange[1].contains(s) && splitByRange[1].contains("t0")) {
+							if(eachRow.get(processModels.get(curTabNum).indexOf(s)).equals("N/A")) {
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), splitByRange[0] + "<=x_t0<=" + splitByRange[2]);
+							}else if(repeat2 == true || repeat4 == true){
+								String temp = totalContext.get(i).get(processModels.get(curTabNum).indexOf(s));
+								System.out.println(temp);
+								if(!temp.contains(splitByRange[0] + "<=x_t0<=" + splitByRange[2]) && temp != "N/A") {
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), temp + "\n&" +splitByRange[0] + "<=x_t0<=" + splitByRange[2]);
+									if(repeat2 == false && repeat4 == true) {
+										repeat4 = false;
+									}
+									repeat2 = false;
+								}else {
+									totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), splitByRange[0] + "<=x_t0<=" + splitByRange[2]);
+									if(repeat2 == false && repeat4 == true) {
+										repeat4 = false;
+									}
+									repeat2 = false;
+								}
+							}
 						}
 					}
-				} else if(equalIndex < 0 && currentPM >= 0) { //when currentPM = t && equal index does not exist
-					if(context[currentPM][i]==null || context[currentPM][i].contains("true") || context[currentPM][i].contains("false")) {
-						if(splits[j].length()!=1) {
-							context[currentPM][i]=splits[j];
+					if(splitByEqEq.length > 0) {
+						if(splitByEqEq[0].matches(s)) {
+							String temp = totalContext.get(i).get(processModels.get(curTabNum).indexOf(s));
+							if(!temp.contains(splitByEqEq[1]) && temp != "N/A" && !temp.contains(splitByEqEq[1]))
+								totalContext.get(i).add(processModels.get(curTabNum).indexOf(s), temp + "\n& " + splitByEqEq[1] + "\n&" + state);
+							else
+								totalContext.get(i).set(processModels.get(curTabNum).indexOf(s), splitByEqEq[1] + "\n&" + state);
 						}
-					}else if(!context[currentPM][i].isEmpty() && !context[currentPM][i].contains("<=")){
-						context[currentPM][i] += (" &\n" +splits[j]);
 					}
-					currentPM = -1;
-				}		
-				j++;
+//					System.out.println(totalContext.get(i));
+				}
 			}
 			i++;
 		}
 		
-		for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
-			for(int y=0;y<splitMcsData.length;y++) {
-				if(context[x][y]==null) {
-					context[x][y] = "N/A";
-				}
-			}
-		}
-		
 		int curtableSize = totalData.get(curTabNum).getCtTableList().size();
-		for(int y=0;y < splitMcsData.length;y++) {
-	        ArrayList<String> totalContexts = new ArrayList<String>();
-			if(!abstractedPMs.isEmpty()) {
-				for(int a = 0; a < pmvDB.getAbstractedList().size(); a++) {
-					if(splitMcsData[y].equals(pmvDB.getAbstractedList().get(a).get(0))) {
-						totalContexts.add(y, abstractedPMs.get(a));
-					}else {
-						for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
-							totalContexts.add(x, context[x][y]);
-						}
-					}
-				}
-			}else {
-				for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
-					totalContexts.add(x, context[x][y]);
-				}
-			}
+		for(int y = 0; y < eachRow.size(); y++) {
+//	        ArrayList<String> totalContexts = new ArrayList<String>();
+//			if(!abstractedPMs.isEmpty()) {
+//				for(int a = 0; a < pmvDB.getAbstractedList().size(); a++) {
+//					if(eachRow.get(y).equals(pmvDB.getAbstractedList().get(a).get(0))) {
+//						eachRow.add(y, abstractedPMs.get(a));
+//					}else {
+//						for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
+//							eachRow.add(x, totalContext.get(x).get(y));
+//						}
+//					}
+//				}
+//			}else {
+//				for(int x = 0; x < processModels.get(curTabNum).size(); x++) {
+//					totalContext.get(y).add(x, totalContext.get(y).get(x));
+//				}
+//			}
 			
 			final int a=y;
 //			ArrayList<String> contextComboBoxs = new ArrayList<String>();
@@ -716,19 +776,19 @@ public class CTController {
 			casesComboBox.setValue("Providing Causes Hazard");
 			hazardousComboBox.setValue("X");
 			totalData.get(curTabNum).getCtTableList().add(
-					new CT(controllerNames.get(curTabNum), controlActionNames.get(curTabNum), casesComboBox, curtableSize+a+1, totalContexts, hazardousComboBox)
+					new CT(controllerNames.get(curTabNum), controlActionNames.get(curTabNum), casesComboBox, curtableSize + y + 1, totalContext.get(y), hazardousComboBox)
 			);
 			ctData = totalData.get(curTabNum).getCtTableList();
     		casesComboBox.valueProperty().addListener(new ChangeListener<String>() {
 			      @Override
 			      public void changed(ObservableValue observable, String oldValue, String newValue) {
-			    	totalData.get(curTabNum).getCtTableList().get(curtableSize+a).setCasesValue(newValue);
+			    	totalData.get(curTabNum).getCtTableList().get(curtableSize + a).setCasesValue(newValue);
 			      	}
 			    });
     		hazardousComboBox.valueProperty().addListener(new ChangeListener<String>() {
 			      @Override
 			      public void changed(ObservableValue observable, String oldValue, String newValue) {
-			    	totalData.get(curTabNum).getCtTableList().get(curtableSize+a).setHazardousValue(newValue);
+			    	totalData.get(curTabNum).getCtTableList().get(curtableSize + a).setHazardousValue(newValue);
 			      }
 			    });
 		}

@@ -314,7 +314,6 @@ public class MainApp extends Application {
             // add scene in center of root layout
             rootLayout.setCenter(View);
             
-            System.out.println("ls");
             //add controller
             Step4Controller controller = loader.getController();
             controller.setMainApp(this);
@@ -337,7 +336,6 @@ public class MainApp extends Application {
 	    Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
 	    String filePath = prefs.get("filePath", null);
 	    if (filePath != null) {
-	    	//System.out.println("filePath: " + filePath);
 	        return new File(filePath);
 	    } else {
 	        return null;

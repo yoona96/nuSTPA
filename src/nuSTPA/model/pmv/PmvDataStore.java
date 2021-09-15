@@ -6,6 +6,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PmvDataStore {
+	public PmvDataStore() {
+		ObservableList<String> totalOutputs = FXCollections.observableArrayList();
+		ObservableList<String> selectedOutput = FXCollections.observableArrayList();
+		ObservableList<String> processModelList = FXCollections.observableArrayList();
+		
+		totalOutputs.addAll("th_LO_SG1_LEVEL_Ptrp_Logic", "f_LO_SG1_LEVEL_PV_Err", "f_LO_SG1_LEVEL_Trip_Out", "th_LO_SG1_LEVEL_Trip_Logic", "f_LO_SG1_LEVEL_Val_Out", "f_LO_SG1_LEVEL_Ptrp_Out");
+		selectedOutput.add("f_LO_SG1_LEVEL_Trip_Out");
+		processModelList.addAll("f_LO_SG1_LEVEL_Trip_Out", "th_LO_SG1_LEVEL_Trip_Logic", "f_LO_SG1_LEVEL_Val_Out", "f_LO_SG1_LEVEL_PV", "f_LO_SG1_LEVEL_MT_Query", "f_LO_SG1_LEVEL_AT_Query", "f_LO_SG1_LEVEL_PT_Query", "f_Mod_Err", "f_LO_SG1_LEVEL_Chan_Err", "f_LO_SG1_LEVEL_PV_Err", "th_LO_SG1_LEVEL_Trip_Logic_state");
+		
+		
+		ProcessModel pm = new ProcessModel("RPS", "Trip Signal", totalOutputs, selectedOutput, processModelList);
+		pmvList.add(pm);
+	}
 	//list for each process model tabs
 	private ObservableList<ProcessModel> pmvList = FXCollections.observableArrayList();
 	

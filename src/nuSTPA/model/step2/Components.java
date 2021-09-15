@@ -38,9 +38,6 @@ public class Components {
 		controllers.add(new Controller(50, 750, "ENFMS", 4, temp));
 		controllers.add(new Controller(400, 750, "CEDMCS", 5, temp));
 		controllers.add(new Controller(600, 1000, "Reactor", 6, temp));
-		for(int i = 0; i < controllers.size(); i++) {
-			System.out.println(controllers.get(i).getName());
-		}
 		
 		ArrayList<String> operatorRpsCA = new ArrayList<String>();
 		ArrayList<String> operatorCedmcsCA = new ArrayList<String>();
@@ -97,11 +94,11 @@ public class Components {
 	}
 	
 	public void setProcessModel(ObservableList<String> pmList, String name) {
-		System.out.println("setting process model list...");
+//		System.out.println("setting process model list...");
 		int index = 0;
 		for(Controller c : controllers) {
 			if(c.getName().equals(name)) {
-				System.out.println("this is selected controller : " + c.getName());
+//				System.out.println("this is selected controller : " + c.getName());
 				index = controllers.indexOf(c);
 
 				DoubleProperty X = new SimpleDoubleProperty(c.getX());
@@ -111,7 +108,7 @@ public class Components {
 				RectangleView r = new RectangleView(X, Y, c.getName(), c.getId(), MainApp.components, pmList);
 				c.setRectangle(r);
 				
-				System.out.println("index of selected controller : " + index);
+//				System.out.println("index of selected controller : " + index);
 			}
 		}
 

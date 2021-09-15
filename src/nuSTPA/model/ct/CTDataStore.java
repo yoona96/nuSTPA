@@ -91,8 +91,6 @@ public class CTDataStore {
 		return this.ctTableList;
 	}
 	
-
-
 	public String getController() {
 		return this.getCtController();
 	}
@@ -129,25 +127,17 @@ public class CTDataStore {
 		return ctContextComboBoxs;
 	}
 
-
-
 	public void setCtContextComboBoxs(ArrayList<ArrayList<String>> ctContextComboBoxs) {
 		this.ctContextComboBoxs = ctContextComboBoxs;
 	}
-
-
 
 	public ArrayList<ArrayList<String>> getTotalContexts() {
 		return totalContexts;
 	}
 
-
-
 	public void setTotalContexts(ArrayList<ArrayList<String>> totalContexts) {
 		this.totalContexts = totalContexts;
 	}
-
-
 
 	public ArrayList<String> getHazardous() {
 		return this.ctHazardous;
